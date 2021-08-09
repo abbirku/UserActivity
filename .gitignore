@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/WebCamImageSync/.vs/WebCamImageSync/v16
+/WebCamImageSync/WebCamImageSync/bin/Debug/netcoreapp3.1
+/WebCamImageSync/WebCamImageSync/obj
