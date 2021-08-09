@@ -1,16 +1,16 @@
 ﻿using System;
 using System.IO;
 
-namespace Infrastructure.Adapters
+namespace Infrastructure.DirectoryManager
 {
-    public interface IDirectoryManager
+    public interface IDirectoryManagerAdapter
     {
         string CommonApplicationPath { get; }
         bool Exists(string directory);
         void CreateDirectory(string directory);
     }
 
-    public class DirectoryManager : IDirectoryManager
+    public class DirectoryManagerAdapter : IDirectoryManagerAdapter
     {
         public string CommonApplicationPath => Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
         public bool Exists(string directory) => Directory.Exists(directory);
