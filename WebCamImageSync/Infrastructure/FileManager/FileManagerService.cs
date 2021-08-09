@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 
 namespace Infrastructure.FileManager
 {
-    public interface IFileService
+    public interface IFileManagerService
     {
         void CreateFile(string filePath);
         byte[] ReadFileAsByte(string filePath);
@@ -12,7 +12,7 @@ namespace Infrastructure.FileManager
         void SaveBitmapImage(string filePath, Bitmap bitmap);
     }
 
-    public class FileManagerService : IFileService
+    public class FileManagerService : IFileManagerService
     {
         private readonly IFileAdapter _fileAdapter;
         private readonly IFileStreamAdapter _fileStreamAdapter;

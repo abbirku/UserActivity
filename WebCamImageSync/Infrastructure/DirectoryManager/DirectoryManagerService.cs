@@ -50,9 +50,9 @@ namespace Infrastructure.DirectoryManager
                 throw new Exception("Given folder or File name is empty.");
 
             var directory = GetProgramDataDirectoryPath(folderName);
-            var isCreated = ChecknCreateDirectory(directory);
+            ChecknCreateDirectory(directory);
 
-            return isCreated ? $"{directory}\\{fileName}" : string.Empty;
+            return $"{directory}\\{fileName}";
         }
     }
 }
