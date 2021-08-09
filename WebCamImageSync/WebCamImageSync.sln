@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCamImageSync", "WebCamImageSync\WebCamImageSync.csproj", "{D3A900B6-DEA9-4258-A944-C9B2E04745CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{69D4918B-63A5-4307-87E5-9CD81021965D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D3A900B6-DEA9-4258-A944-C9B2E04745CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3A900B6-DEA9-4258-A944-C9B2E04745CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3A900B6-DEA9-4258-A944-C9B2E04745CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69D4918B-63A5-4307-87E5-9CD81021965D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69D4918B-63A5-4307-87E5-9CD81021965D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69D4918B-63A5-4307-87E5-9CD81021965D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69D4918B-63A5-4307-87E5-9CD81021965D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
