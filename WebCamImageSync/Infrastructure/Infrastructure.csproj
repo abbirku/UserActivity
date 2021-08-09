@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="DirectoryManager\DirectoryManager.cs~RFa0007db.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Adapters\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
