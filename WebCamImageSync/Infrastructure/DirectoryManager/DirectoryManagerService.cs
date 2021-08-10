@@ -21,6 +21,9 @@ namespace Infrastructure.DirectoryManager
         /// </summary>
         public bool ChecknCreateDirectory(string directoryPath)
         {
+            if (string.IsNullOrWhiteSpace(directoryPath))
+                return false;
+
             if (!_directoryManagerAdapter.Exists(directoryPath))
             {
                 _directoryManagerAdapter.CreateDirectory(directoryPath);
