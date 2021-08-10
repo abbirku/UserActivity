@@ -12,6 +12,7 @@ namespace WebCamImageSync
         private readonly IEgmaCvAdapter _egmaCvAdapter;
         private readonly IFileManagerService _fileManagerService;
         private readonly IDirectoryManagerService _directoryManagerService;
+        private string _folderName;
 
         public Application(IEgmaCvAdapter egmaCvAdapter, 
             IFileManagerService fileManagerService,
@@ -20,6 +21,7 @@ namespace WebCamImageSync
             _egmaCvAdapter = egmaCvAdapter;
             _fileManagerService = fileManagerService;
             _directoryManagerService = directoryManagerService;
+            _folderName = AppSettingsInfo.GetCurrentValue<string>("FolderName");
         }
 
         public void Run()
@@ -29,7 +31,7 @@ namespace WebCamImageSync
                 Console.WriteLine("Capturing image");
                 
                 var fileName = $"{Guid.NewGuid()}.jpg";
-                var filePath = _directoryManagerService.CreateProgramDataFilePath("WebCamSync", fileName);
+                var filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
 
                 _egmaCvAdapter.CaptureImage(0, filePath);
 
