@@ -45,7 +45,7 @@ namespace Infrastructure.DirectoryManager
         }
 
         /// <summary>
-        /// Create a file path under given folderName in C:\ProgramData
+        /// Create a file path (If not exists) under given folderName in C:\ProgramData
         /// </summary>
         public string CreateProgramDataFilePath(string folderName, string fileName)
         {
