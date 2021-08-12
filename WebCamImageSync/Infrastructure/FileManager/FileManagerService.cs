@@ -25,16 +25,24 @@ namespace Infrastructure.FileManager
 
         public void CreateFile(string path)
         {
+            if (string.IsNullOrWhiteSpace(path))
+                throw new Exception("Provide valid file path");
+
             if (!_fileAdapter.DoesExists(path))
                 _fileAdapter.CreateFile(path);
         }
+
         public byte[] ReadFileAsByte(string filePath)
         {
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new Exception("Provide valid file path read the file stream.");
 
+            if (!_fileAdapter.DoesExists(filePath))
+                throw new Exception("File does not exists");
+
             return _fileStreamAdapter.ReadFileAsByte(filePath);
         }
+        
         public void SaveByteStream(string filePath, byte[] file)
         {
             if (string.IsNullOrWhiteSpace(filePath) || file == null || file.Length == 0)
@@ -42,6 +50,7 @@ namespace Infrastructure.FileManager
 
             _fileStreamAdapter.WriteFileBytes(filePath, file);
         }
+        
         public void SaveBitmapImage(string filePath, Bitmap bitmap)
         {
             if (string.IsNullOrWhiteSpace(filePath) || bitmap == null)
@@ -49,6 +58,5 @@ namespace Infrastructure.FileManager
 
             bitmap.Save(filePath, ImageFormat.Jpeg);
         }
-
     }
 }
