@@ -2,7 +2,9 @@
 using Infrastructure.DirectoryManager;
 using Infrastructure.EgmaCV;
 using Infrastructure.FileManager;
+using Infrastructure.GoogleDriveApi;
 using System;
+using System.Threading.Tasks;
 
 namespace WebCamImageSync
 {
@@ -19,13 +21,16 @@ namespace WebCamImageSync
             builder.RegisterType<FileStreamAdapter>().As<IFileStreamAdapter>();
             builder.RegisterType<FileManagerService>().As<IFileManagerService>();
             builder.RegisterType<EgmaCvAdapter>().As<IEgmaCvAdapter>();
+            builder.RegisterType<GoogleDriveApiManagerAdapter>().As<IGoogleDriveApiManagerAdapter>()
+                   .WithParameter("authfilePath", AppSettingsInfo.CreateGoogleDriveAuthFile(AppSettingsInfo.GetCurrentValue<string>("AuthFileName")))
+                   .WithParameter("directoryId", AppSettingsInfo.GetCurrentValue<string>("DirectoryId")); ;
 
             return builder.Build();
         }
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            CompositionRoot().Resolve<Application>().Run();
+            await CompositionRoot().Resolve<Application>().Run();
         }
     }
 }
