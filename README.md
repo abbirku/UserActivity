@@ -1,2 +1,2 @@
-# WebCamImageSync
-Target of this repository is to capture image from WebCam and sync images on google drive
+# UserActivity
+Target of this repository is to capture user activities and sync data on google drive
