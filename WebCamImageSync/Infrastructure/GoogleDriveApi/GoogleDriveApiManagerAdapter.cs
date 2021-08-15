@@ -16,6 +16,12 @@ namespace Infrastructure.GoogleDriveApi
         Task<string> UploadFileAsync(string filePath, Action<IUploadProgress> uploadProgress = null);
     }
 
+    /// <summary>
+    /// Sources:
+    /// https://www.daimto.com/upload-file-to-google-drive/
+    /// https://www.daimto.com/google-drive-authentication-c/
+    /// https://dotnetcoretutorials.com/2018/08/14/getting-a-mime-type-from-a-file-name-in-net-core/
+    /// </summary>
     public class GoogleDriveApiManagerAdapter : IGoogleDriveApiManagerAdapter
     {
         private readonly string _authfilePath;

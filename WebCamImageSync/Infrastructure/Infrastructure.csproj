@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <None Remove="DirectoryManager\DirectoryManager.cs~RFa0007db.TMP" />
+    <None Remove="GoogleDriveApi\GoogleDriveApiManagerAdapter.cs~RF9f2f7dd.TMP" />
   </ItemGroup>
 
   <ItemGroup>
