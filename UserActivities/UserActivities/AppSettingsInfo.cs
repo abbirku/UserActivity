@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.IO;
 
-namespace WebCamImageSync
+namespace UserActivities
 {
     /// <summary>
     /// Note: While adding appsetting.json in console app, goto properties and select "Copy if newer" for "Copy to Output Directory" option.

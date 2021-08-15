@@ -1,13 +1,10 @@
 ﻿using Infrastructure.DirectoryManager;
 using Infrastructure.EgmaCV;
-using Infrastructure.FileManager;
 using Infrastructure.GoogleDriveApi;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace WebCamImageSync
+namespace UserActivities
 {
     public class Application
     {

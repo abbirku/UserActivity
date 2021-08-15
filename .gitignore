@@ -10,3 +10,11 @@
 /WebCamImageSync/.vs/WebCamImageSync
 /WebCamImageSync/Infrastructure.Test/bin/Debug/netcoreapp3.1
 /WebCamImageSync/Infrastructure.Test/obj
+/UserActivities/.vs/UserActivities
+/UserActivities/Infrastructure/bin/Debug/netcoreapp3.1
+/UserActivities/Infrastructure/obj
+/UserActivities/Infrastructure.Test/bin/Debug/netcoreapp3.1
+/UserActivities/Infrastructure.Test/obj
+/UserActivities/UserActivities/bin/Debug/netcoreapp3.1
+/UserActivities/UserActivities/obj/Debug/netcoreapp3.1
+/UserActivities/UserActivities/obj

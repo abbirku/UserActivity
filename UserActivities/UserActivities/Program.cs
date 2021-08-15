@@ -6,7 +6,7 @@ using Infrastructure.GoogleDriveApi;
 using System;
 using System.Threading.Tasks;
 
-namespace WebCamImageSync
+namespace UserActivities
 {
     class Program
     {
