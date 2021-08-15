@@ -10,13 +10,14 @@ namespace WebCamImageSync
     public static class AppSettingsInfo
     {
         public static string ConfigFileName { get; set; } = "appsettings.json";
+        public static string CurrentDirectory = Directory.GetCurrentDirectory();
 
         // Get a valued stored in the appsettings.
         // Pass in a key like TestArea:TestKey to get Value
         public static T GetCurrentValue<T>(string Key)
         {
             var builder = new ConfigurationBuilder()
-                            .SetBasePath(Directory.GetCurrentDirectory())
+                            .SetBasePath(CurrentDirectory)
                             .AddJsonFile(ConfigFileName, optional: false, reloadOnChange: true)
                             .AddEnvironmentVariables();
 
@@ -24,5 +25,7 @@ namespace WebCamImageSync
 
             return configuration.GetValue<T>(Key);
         }
+
+        public static string CreateGoogleDriveAuthFile(string fileName) => $"{CurrentDirectory}\\{fileName}";
     }
 }

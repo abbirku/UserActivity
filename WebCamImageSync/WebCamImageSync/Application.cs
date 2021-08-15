@@ -1,9 +1,11 @@
 ﻿using Infrastructure.DirectoryManager;
 using Infrastructure.EgmaCV;
 using Infrastructure.FileManager;
+using Infrastructure.GoogleDriveApi;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace WebCamImageSync
 {
@@ -11,17 +13,20 @@ namespace WebCamImageSync
     {
         private readonly IEgmaCvAdapter _egmaCvAdapter;
         private readonly IDirectoryManagerService _directoryManagerService;
+        private readonly IGoogleDriveApiManagerAdapter _googleDriveApiManagerAdapter;
         private string _folderName;
 
         public Application(IEgmaCvAdapter egmaCvAdapter, 
-            IDirectoryManagerService directoryManagerService)
+            IDirectoryManagerService directoryManagerService,
+            IGoogleDriveApiManagerAdapter googleDriveApiManagerAdapter)
         {
             _egmaCvAdapter = egmaCvAdapter;
             _directoryManagerService = directoryManagerService;
             _folderName = AppSettingsInfo.GetCurrentValue<string>("FolderName");
+            _googleDriveApiManagerAdapter = googleDriveApiManagerAdapter;
         }
 
-        public void Run()
+        public async Task Run()
         {
             try
             {
@@ -31,6 +36,7 @@ namespace WebCamImageSync
                 var filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
 
                 _egmaCvAdapter.CaptureImage(0, filePath);
+                await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
                 Console.WriteLine("Done");
             }
