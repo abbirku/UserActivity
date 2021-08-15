@@ -3,6 +3,7 @@ using Infrastructure.DirectoryManager;
 using Infrastructure.EgmaCV;
 using Infrastructure.FileManager;
 using Infrastructure.GoogleDriveApi;
+using Infrastructure.ScreenCapture;
 using System;
 using System.Threading.Tasks;
 
@@ -21,6 +22,8 @@ namespace UserActivities
             builder.RegisterType<FileStreamAdapter>().As<IFileStreamAdapter>();
             builder.RegisterType<FileManagerService>().As<IFileManagerService>();
             builder.RegisterType<EgmaCvAdapter>().As<IEgmaCvAdapter>();
+            builder.RegisterType<ScreenCaptureAdapter>().As<IScreenCaptureAdapter>();
+            builder.RegisterType<ScreenCaptureService>().As<IScreenCaptureService>();
             builder.RegisterType<GoogleDriveApiManagerAdapter>().As<IGoogleDriveApiManagerAdapter>()
                    .WithParameter("authfilePath", AppSettingsInfo.CreateGoogleDriveAuthFile(AppSettingsInfo.GetCurrentValue<string>("AuthFileName")))
                    .WithParameter("directoryId", AppSettingsInfo.GetCurrentValue<string>("DirectoryId")); ;

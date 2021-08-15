@@ -1,11 +1,12 @@
 ﻿using Emgu.CV;
 using System;
+using System.Threading.Tasks;
 
 namespace Infrastructure.EgmaCV
 {
     public interface IEgmaCvAdapter
     {
-        void CaptureImage(int camIndex, string filePath);
+        Task CaptureImageAsync(int camIndex, string filePath);
     }
 
     /// <summary>
@@ -15,14 +16,17 @@ namespace Infrastructure.EgmaCV
     /// </summary>
     public class EgmaCvAdapter : IEgmaCvAdapter
     {
-        public void CaptureImage(int camIndex, string filePath)
+        public async Task CaptureImageAsync(int camIndex, string filePath)
         {
-            if (string.IsNullOrWhiteSpace(filePath))
-                throw new Exception("Provide a valid path of file");
+            await Task.Run(() =>
+            {
+                if (string.IsNullOrWhiteSpace(filePath))
+                    throw new Exception("Provide a valid path of file");
 
-            using var capture = new VideoCapture(camIndex, VideoCapture.API.DShow);
-            var image = capture.QueryFrame(); //take a picture
-            image.Save(filePath);
+                using var capture = new VideoCapture(camIndex, VideoCapture.API.DShow);
+                var image = capture.QueryFrame(); //take a picture
+                image.Save(filePath);
+            });
         }
     }
 }
