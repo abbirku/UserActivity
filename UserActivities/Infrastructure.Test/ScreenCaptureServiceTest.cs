@@ -77,7 +77,7 @@ namespace Infrastructure.Test
         [TestCase(0, 0)]
         [TestCase(0, 1)]
         [TestCase(1, 0)]
-        public async Task CaptureScreenAsync_ForZeroWidthOrHeight_ThrowException(int width, int height)
+        public async Task CaptureScreenAsync_IfWidthOrHeightIsZero_ThrowException(int width, int height)
         {
             //Arrange
             var filePath = "C:\\Test\\file.jpg";
