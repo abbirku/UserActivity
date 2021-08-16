@@ -3,6 +3,7 @@ using Infrastructure.EgmaCV;
 using Infrastructure.GoogleDriveApi;
 using Infrastructure.RunningPrograms;
 using Infrastructure.ScreenCapture;
+using Infrastructure.ActiveProgram;
 using System;
 using System.Threading.Tasks;
 
@@ -15,13 +16,15 @@ namespace UserActivities
         private readonly IGoogleDriveApiManagerAdapter _googleDriveApiManagerAdapter;
         private readonly IScreenCaptureService _screenCaptureService;
         private readonly IRunningProgramService _runningProgramService;
+        private readonly IActiveProgramService _activeProgramService;
         private string _folderName;
 
         public Application(IEgmaCvAdapter egmaCvAdapter, 
             IDirectoryManagerService directoryManagerService,
             IGoogleDriveApiManagerAdapter googleDriveApiManagerAdapter,
             IScreenCaptureService screenCaptureService,
-            IRunningProgramService runningProgramService)
+            IRunningProgramService runningProgramService,
+            IActiveProgramService activeProgramService)
         {
             _egmaCvAdapter = egmaCvAdapter;
             _directoryManagerService = directoryManagerService;
@@ -29,6 +32,7 @@ namespace UserActivities
             _googleDriveApiManagerAdapter = googleDriveApiManagerAdapter;
             _screenCaptureService = screenCaptureService;
             _runningProgramService = runningProgramService;
+            _activeProgramService = activeProgramService;
         }
 
         public async Task Run()
@@ -61,6 +65,11 @@ namespace UserActivities
                 await _runningProgramService.CaptureProgramTitleAsync(filePath);
                 await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
+                //Capture active window title and sync to google drive 
+                fileName = $"ActiveWindow-{Guid.NewGuid()}.txt";
+                filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
+                await _activeProgramService.CaptureActiveProgramTitleAsync(filePath);
+                await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
                 Console.WriteLine("Done");
             }
