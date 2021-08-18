@@ -1,19 +1,34 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="DirectoryManager\DirectoryManager.cs~RFa0007db.TMP" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="DirectoryManager\DirectoryManager.cs~RFa0007db.TMP" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Emgu.CV" Version="4.5.3.4721" />
-    <PackageReference Include="Emgu.CV.runtime.windows" Version="4.5.3.4721" />
-    <PackageReference Include="Google.Apis.Drive.v3" Version="1.54.0.2397" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Emgu.CV" Version="4.5.3.4721" />
+		<PackageReference Include="Emgu.CV.runtime.windows" Version="4.5.3.4721" />
+		<PackageReference Include="Google.Apis.Drive.v3" Version="1.54.0.2397" />
+		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+		<PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" />
+	</ItemGroup>
+
+	<!--The following is needed for windows automation-->
+	<!--<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net5.0-windows</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" />
+	</ItemGroup>-->
 
 </Project>

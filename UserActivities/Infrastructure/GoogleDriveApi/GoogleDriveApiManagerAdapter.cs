@@ -21,16 +21,26 @@ namespace Infrastructure.GoogleDriveApi
         private readonly string _authfilePath;
         private readonly string _directoryId;
         private readonly IFileAdapter _fileAdapter;
+        private readonly IFileInfoAdapter _fileInfoAdapter;
+        private long _fileSize;
 
-        public GoogleDriveApiManagerAdapter(string authfilePath, string directoryId, IFileAdapter fileAdapter)
+        public GoogleDriveApiManagerAdapter(string authfilePath, 
+            string directoryId, 
+            IFileAdapter fileAdapter,
+            IFileInfoAdapter fileInfoAdapter)
         {
             _authfilePath = authfilePath;
             _directoryId = directoryId;
             _fileAdapter = fileAdapter;
+            _fileInfoAdapter = fileInfoAdapter;
+            _fileSize = 0;
         }
 
         public async Task<string> UploadFileAsync(string filePath, Action<IUploadProgress> uploadProgress = null)
         {
+            //Gathering file size at the very begining
+            _fileSize = _fileInfoAdapter.FileSize(filePath); 
+
             var credential = GoogleCredential.FromFile(_authfilePath)
                                     .CreateScoped(DriveService.ScopeConstants.Drive);
 
@@ -57,6 +67,8 @@ namespace Infrastructure.GoogleDriveApi
                 request.ChunkSize = 262144;
                 if (uploadProgress != null)
                     request.ProgressChanged += uploadProgress;
+                else
+                    request.ProgressChanged += UploadProgress;
 
                 var results = await request.UploadAsync(CancellationToken.None);
 
@@ -67,6 +79,44 @@ namespace Infrastructure.GoogleDriveApi
             }
             else
                 throw new Exception("Provide valid file path");
+        }
+
+        private void UploadProgress(IUploadProgress progress)
+        {
+            DrawTextProgressBar(progress.BytesSent, _fileSize);
+        }
+
+        private void DrawTextProgressBar(long progress, long total)
+        {
+            //draw empty progress bar
+            Console.CursorLeft = 0;
+            Console.Write("["); //start
+            Console.CursorLeft = 32;
+            Console.Write("]"); //end
+            Console.CursorLeft = 1;
+            float onechunk = 30.0f / total;
+
+            //draw filled part
+            int position = 1;
+            for (int i = 0; i < onechunk * progress; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.Gray;
+                Console.CursorLeft = position++;
+                Console.Write(" ");
+            }
+
+            //draw unfilled part
+            for (int i = position; i <= 31; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.Green;
+                Console.CursorLeft = position++;
+                Console.Write(" ");
+            }
+
+            //draw totals
+            Console.CursorLeft = 35;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Write(progress.ToString() + " of " + total.ToString() + "    "); //blanks at the end remove any excess
         }
     }
 }

@@ -6,6 +6,8 @@ using Infrastructure.ScreenCapture;
 using Infrastructure.ActiveProgram;
 using System;
 using System.Threading.Tasks;
+using Infrastructure.BrowserActivity;
+using Google.Apis.Upload;
 
 namespace UserActivities
 {
@@ -17,14 +19,16 @@ namespace UserActivities
         private readonly IScreenCaptureService _screenCaptureService;
         private readonly IRunningProgramService _runningProgramService;
         private readonly IActiveProgramService _activeProgramService;
+        private readonly IBrowserActivityService _browserActivityService;
         private string _folderName;
 
-        public Application(IEgmaCvAdapter egmaCvAdapter, 
+        public Application(IEgmaCvAdapter egmaCvAdapter,
             IDirectoryManagerService directoryManagerService,
             IGoogleDriveApiManagerAdapter googleDriveApiManagerAdapter,
             IScreenCaptureService screenCaptureService,
             IRunningProgramService runningProgramService,
-            IActiveProgramService activeProgramService)
+            IActiveProgramService activeProgramService,
+            IBrowserActivityService browserActivityService)
         {
             _egmaCvAdapter = egmaCvAdapter;
             _directoryManagerService = directoryManagerService;
@@ -33,6 +37,7 @@ namespace UserActivities
             _screenCaptureService = screenCaptureService;
             _runningProgramService = runningProgramService;
             _activeProgramService = activeProgramService;
+            _browserActivityService = browserActivityService;
         }
 
         public async Task Run()
@@ -69,6 +74,18 @@ namespace UserActivities
                 fileName = $"ActiveWindow-{Guid.NewGuid()}.txt";
                 filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
                 await _activeProgramService.CaptureActiveProgramTitleAsync(filePath);
+                await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
+
+                //Capture open browser tab title and sync to google drive
+                fileName = $"Tabs-{Guid.NewGuid()}.txt";
+                filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
+                await _browserActivityService.EnlistAllOpenTabs("chrome", filePath);
+                await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
+
+                //Capture active tab url and sync to google drive
+                fileName = $"Url-{Guid.NewGuid()}.txt";
+                filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
+                await _browserActivityService.EnlistActiveTabUrl("chrome", filePath);
                 await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
                 Console.WriteLine("Done");
