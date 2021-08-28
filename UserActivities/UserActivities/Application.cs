@@ -11,12 +11,13 @@ using Google.Apis.Upload;
 using System.Linq;
 using Google.Apis.Drive.v3.Data;
 using System.Collections.Generic;
+using CoreActivities.EgmaCV;
 
 namespace UserActivities
 {
     public class Application
     {
-        private readonly IEgmaCvAdapter _egmaCvAdapter;
+        private readonly IEgmaCv _egmaCv;
         private readonly IDirectoryManagerService _directoryManagerService;
         private readonly IGoogleDriveApiManagerAdapter _googleDriveApiManagerAdapter;
         private readonly IScreenCaptureService _screenCaptureService;
@@ -25,7 +26,7 @@ namespace UserActivities
         private readonly IBrowserActivityService _browserActivityService;
         private string _folderName;
 
-        public Application(IEgmaCvAdapter egmaCvAdapter,
+        public Application(IEgmaCv egmaCv,
             IDirectoryManagerService directoryManagerService,
             IGoogleDriveApiManagerAdapter googleDriveApiManagerAdapter,
             IScreenCaptureService screenCaptureService,
@@ -33,7 +34,7 @@ namespace UserActivities
             IActiveProgramService activeProgramService,
             IBrowserActivityService browserActivityService)
         {
-            _egmaCvAdapter = egmaCvAdapter;
+            _egmaCv = egmaCv;
             _directoryManagerService = directoryManagerService;
             _folderName = AppSettingsInfo.GetCurrentValue<string>("FolderName");
             _googleDriveApiManagerAdapter = googleDriveApiManagerAdapter;
@@ -50,10 +51,10 @@ namespace UserActivities
                 Console.WriteLine("Starting User Activities");
 
                 ////Capture webcam image and sync to google drive
-                //var fileName = $"{Guid.NewGuid()}.jpg";
-                //var filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
-                //await _egmaCvAdapter.CaptureImageAsync(0, filePath);
-                //await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
+                var fileName = $"{Guid.NewGuid()}.jpg";
+                var filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
+                await _egmaCv.CaptureImageAsync(0, filePath);
+                await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
                 ////Capture user screen and sync to google drive
                 //fileName = $"{Guid.NewGuid()}.jpg";
@@ -91,12 +92,12 @@ namespace UserActivities
                 //await _browserActivityService.EnlistActiveTabUrl("chrome", filePath);
                 //await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
-                var files = await PrintFilesInAGoogleDirectory();
-                var input = Console.ReadLine();
-                var index = int.Parse(input);
+                //var files = await PrintFilesInAGoogleDirectory();
+                //var input = Console.ReadLine();
+                //var index = int.Parse(input);
 
-                if (index > -1)
-                    await _googleDriveApiManagerAdapter.DeleteAsync(files[index].Id);
+                //if (index > -1)
+                //    await _googleDriveApiManagerAdapter.DeleteAsync(files[index].Id);
 
                 Console.WriteLine("Done");
             }

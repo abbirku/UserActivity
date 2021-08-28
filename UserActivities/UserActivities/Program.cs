@@ -9,6 +9,7 @@ using Infrastructure.ActiveProgram;
 using Infrastructure.BrowserActivity;
 using System;
 using System.Threading.Tasks;
+using CoreActivities.EgmaCV;
 
 namespace UserActivities
 {
@@ -19,12 +20,13 @@ namespace UserActivities
             var builder = new ContainerBuilder();
             
             builder.RegisterType<Application>();
+            builder.RegisterModule(new EgmaCvPackage());
+
             builder.RegisterType<DirectoryManagerAdapter>().As<IDirectoryManagerAdapter>();
             builder.RegisterType<DirectoryManagerService>().As<IDirectoryManagerService>();
             builder.RegisterType<FileAdapter>().As<IFileAdapter>();
             builder.RegisterType<FileStreamAdapter>().As<IFileStreamAdapter>();
             builder.RegisterType<FileManagerService>().As<IFileManagerService>();
-            builder.RegisterType<EgmaCvAdapter>().As<IEgmaCvAdapter>();
             builder.RegisterType<ScreenCaptureAdapter>().As<IScreenCaptureAdapter>();
             builder.RegisterType<ScreenCaptureService>().As<IScreenCaptureService>();
             builder.RegisterType<RunningProgramAdapter>().As<IRunningProgramAdapter>();
