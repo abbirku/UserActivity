@@ -1,8 +1,7 @@
 ﻿using Infrastructure.DirectoryManager;
-using Infrastructure.EgmaCV;
 using Infrastructure.GoogleDriveApi;
 using Infrastructure.RunningPrograms;
-using Infrastructure.ScreenCapture;
+using Infrastructure.Services;
 using Infrastructure.ActiveProgram;
 using System;
 using System.Threading.Tasks;
@@ -27,18 +26,20 @@ namespace UserActivities
         private string _folderName;
 
         public Application(IEgmaCv egmaCv,
+            IScreenCaptureService screenCaptureService,
+            
             IDirectoryManagerService directoryManagerService,
             IGoogleDriveApiManagerAdapter googleDriveApiManagerAdapter,
-            IScreenCaptureService screenCaptureService,
             IRunningProgramService runningProgramService,
             IActiveProgramService activeProgramService,
             IBrowserActivityService browserActivityService)
         {
             _egmaCv = egmaCv;
+            _screenCaptureService = screenCaptureService;
+
             _directoryManagerService = directoryManagerService;
             _folderName = AppSettingsInfo.GetCurrentValue<string>("FolderName");
             _googleDriveApiManagerAdapter = googleDriveApiManagerAdapter;
-            _screenCaptureService = screenCaptureService;
             _runningProgramService = runningProgramService;
             _activeProgramService = activeProgramService;
             _browserActivityService = browserActivityService;

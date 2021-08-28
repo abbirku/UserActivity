@@ -1,14 +1,13 @@
 ﻿using Autofac.Extras.Moq;
-using Infrastructure.ScreenCapture;
+using Infrastructure.Services;
 using Infrastructure.FileManager;
 using Moq;
 using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
 using System.Drawing;
+using CoreActivities.ScreenCapture;
 
 namespace Infrastructure.Test
 {
@@ -17,7 +16,7 @@ namespace Infrastructure.Test
     {
         private AutoMock _mock;
         private Mock<IFileManagerService> _fileManagerServiceMoc;
-        private Mock<IScreenCaptureAdapter> _screenCaptureAdapterMoc;
+        private Mock<IScreenCapture> _screenCaptureAdapterMoc;
         private ScreenCaptureService _screenCaptureService;
 
         [OneTimeSetUp]
@@ -30,7 +29,7 @@ namespace Infrastructure.Test
         public void SetUp()
         {
             _fileManagerServiceMoc = _mock.Mock<IFileManagerService>();
-            _screenCaptureAdapterMoc = _mock.Mock<IScreenCaptureAdapter>();
+            _screenCaptureAdapterMoc = _mock.Mock<IScreenCapture>();
             _screenCaptureService = _mock.Create<ScreenCaptureService>();
         }
 

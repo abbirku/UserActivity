@@ -26,7 +26,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Adapters\" />
-	  <Folder Include="Services\" />
 	</ItemGroup>
 
 	<!--The following is needed for windows automation-->

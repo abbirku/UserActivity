@@ -1,13 +1,13 @@
 ﻿using System.Drawing;
 
-namespace Infrastructure.ScreenCapture
+namespace CoreActivities.ScreenCapture
 {
-    public interface IScreenCaptureAdapter
+    public interface IScreenCapture
     {
         Bitmap CaptureUserScreen(int width, int height);
     }
 
-    public class ScreenCaptureAdapter : IScreenCaptureAdapter
+    public class ScreenCaptureAdapter : IScreenCapture
     {
         public Bitmap CaptureUserScreen(int width, int height)
         {

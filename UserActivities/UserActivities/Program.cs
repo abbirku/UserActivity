@@ -1,15 +1,15 @@
 ﻿using Autofac;
 using Infrastructure.DirectoryManager;
-using Infrastructure.EgmaCV;
 using Infrastructure.FileManager;
 using Infrastructure.GoogleDriveApi;
-using Infrastructure.ScreenCapture;
+using Infrastructure.Services;
 using Infrastructure.RunningPrograms;
 using Infrastructure.ActiveProgram;
 using Infrastructure.BrowserActivity;
 using System;
 using System.Threading.Tasks;
 using CoreActivities.EgmaCV;
+using CoreActivities.ScreenCapture;
 
 namespace UserActivities
 {
@@ -21,13 +21,13 @@ namespace UserActivities
             
             builder.RegisterType<Application>();
             builder.RegisterModule(new EgmaCvPackage());
+            builder.RegisterModule(new ScreenCapturePackage());
 
             builder.RegisterType<DirectoryManagerAdapter>().As<IDirectoryManagerAdapter>();
             builder.RegisterType<DirectoryManagerService>().As<IDirectoryManagerService>();
             builder.RegisterType<FileAdapter>().As<IFileAdapter>();
             builder.RegisterType<FileStreamAdapter>().As<IFileStreamAdapter>();
             builder.RegisterType<FileManagerService>().As<IFileManagerService>();
-            builder.RegisterType<ScreenCaptureAdapter>().As<IScreenCaptureAdapter>();
             builder.RegisterType<ScreenCaptureService>().As<IScreenCaptureService>();
             builder.RegisterType<RunningProgramAdapter>().As<IRunningProgramAdapter>();
             builder.RegisterType<RunningProgramService>().As<IRunningProgramService>();
