@@ -23,10 +23,11 @@ namespace Infrastructure.GoogleDriveApi
 
     /// <summary>
     /// Source:
-    /// 1. https://developers.google.com/drive/api/v3/reference/files/list?apix_params=%7B%22fields%22%3A%22*%22%7D
-    /// 2. https://www.daimto.com/google-drive-authentication-c/
-    /// 3. https://developers.google.com/drive/api/v2/search-files
-    /// 4. https://support.intuiface.com/hc/en-us/articles/360010850720-List-and-display-items-stored-in-a-Google-Drive-folder-using-the-Google-Drive-API
+    /// 1. https://github.com/LindaLawton/Google-Dotnet-Samples/blob/master/Samples/Drive%20API/v3/FilesSample.cs
+    /// 2. https://developers.google.com/drive/api/v3/reference/files/list?apix_params=%7B%22fields%22%3A%22*%22%7D
+    /// 3. https://www.daimto.com/google-drive-authentication-c/
+    /// 4. https://developers.google.com/drive/api/v2/search-files
+    /// 5. https://support.intuiface.com/hc/en-us/articles/360010850720-List-and-display-items-stored-in-a-Google-Drive-folder-using-the-Google-Drive-API
     /// </summary>
 
     public class GoogleDriveApiManagerAdapter : IGoogleDriveApiManagerAdapter

@@ -91,14 +91,14 @@ namespace UserActivities
                 //await _browserActivityService.EnlistActiveTabUrl("chrome", filePath);
                 //await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
-                //var files = await PrintFilesInAGoogleDirectory();
-                //var input = Console.ReadLine();
-                //var index = int.Parse(input);
+                var files = await PrintFilesInAGoogleDirectory();
+                var input = Console.ReadLine();
+                var index = int.Parse(input);
 
-                //if (index > -1)
-                //    await _googleDriveApiManagerAdapter.DeleteAsync(files[index].Id);
+                if (index > -1)
+                    await _googleDriveApiManagerAdapter.DeleteAsync(files[index].Id);
 
-                //Console.WriteLine("Done");
+                Console.WriteLine("Done");
             }
             catch (Exception exp)
             {
