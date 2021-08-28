@@ -127,7 +127,7 @@ namespace Infrastructure.GoogleDriveApi
                         var request = _driveService.Files.List();
 
                         // Applying optional parameters to the request.                
-                        request = (FilesResource.ListRequest)ApplyOptionalParms(request, optional);
+                        request = (FilesResource.ListRequest)ApplyOptionalParams(request, optional);
 
                         // Requesting data.
                         if (!string.IsNullOrWhiteSpace(nextPageToken))
@@ -171,7 +171,7 @@ namespace Infrastructure.GoogleDriveApi
                     var request = _driveService.Files.Delete(fileId);
 
                     // Applying optional parameters to the request.                
-                    request = (FilesResource.DeleteRequest)ApplyOptionalParms(request, optional);
+                    request = (FilesResource.DeleteRequest)ApplyOptionalParams(request, optional);
 
                     // Requesting data.
                     request.Execute();
@@ -222,7 +222,7 @@ namespace Infrastructure.GoogleDriveApi
             Console.Write(progress.ToString() + " of " + total.ToString() + "    "); //blanks at the end remove any excess
         }
 
-        private object ApplyOptionalParms(object request, object optional)
+        private object ApplyOptionalParams(object request, object optional)
         {
             if (optional == null)
                 return request;
