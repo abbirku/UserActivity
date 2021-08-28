@@ -4,15 +4,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Infrastructure.RunningPrograms
+namespace CoreActivities.RunningPrograms
 {
-    public interface IRunningProgramAdapter
+    public interface IRunningPrograms
     {
         List<string> GetRunningProgramsList();
         List<string> GetRunningProcessList();
     }
 
-    public class RunningProgramAdapter : IRunningProgramAdapter
+    public class RunningProgramAdapter : IRunningPrograms
     {
         public List<string> GetRunningProcessList()
         {

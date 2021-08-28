@@ -1,8 +1,9 @@
-﻿using Infrastructure.FileManager;
+﻿using CoreActivities.ScreenCapture;
+using Infrastructure.FileManager;
 using System;
 using System.Threading.Tasks;
 
-namespace Infrastructure.ScreenCapture
+namespace Infrastructure.Services
 {
     public interface IScreenCaptureService
     {
@@ -12,13 +13,13 @@ namespace Infrastructure.ScreenCapture
     public class ScreenCaptureService : IScreenCaptureService
     {
         private readonly IFileManagerService _fileManagerService;
-        private readonly IScreenCaptureAdapter _screenCaptureAdapter;
+        private readonly IScreenCapture _screenCapture;
 
         public ScreenCaptureService(IFileManagerService fileManagerService,
-            IScreenCaptureAdapter screenCaptureAdapter)
+            IScreenCapture screenCapture)
         {
             _fileManagerService = fileManagerService;
-            _screenCaptureAdapter = screenCaptureAdapter;
+            _screenCapture = screenCapture;
         }
 
         public async Task CaptureScreenAsync(int width, int height, string filePath)
@@ -28,7 +29,7 @@ namespace Infrastructure.ScreenCapture
                 if (string.IsNullOrWhiteSpace(filePath))
                     throw new Exception("Provide valid file path");
 
-                var image = _screenCaptureAdapter.CaptureUserScreen(width, height);
+                var image = _screenCapture.CaptureUserScreen(width, height);
 
                 if (image == null)
                     throw new Exception("Image capture not successful");

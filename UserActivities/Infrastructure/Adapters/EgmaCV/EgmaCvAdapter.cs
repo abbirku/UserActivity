@@ -2,19 +2,14 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Infrastructure.EgmaCV
+namespace CoreActivities.EgmaCV
 {
-    public interface IEgmaCvAdapter
-    {
-        Task CaptureImageAsync(int camIndex, string filePath);
-    }
-
     /// <summary>
-    /// Follow:
+    /// Source:
     /// https://blog.dotnetframework.org/2020/12/29/capture-a-webcam-image-using-net-core-and-opencv/
     /// https://blog.dotnetframework.org/2020/12/30/record-mp4-h264-video-from-a-webcam-in-c-net-core/
     /// </summary>
-    public class EgmaCvAdapter : IEgmaCvAdapter
+    public class EgmaCvAdapter : IEgmaCv
     {
         public async Task CaptureImageAsync(int camIndex, string filePath)
         {

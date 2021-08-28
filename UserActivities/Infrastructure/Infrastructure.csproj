@@ -11,6 +11,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Autofac" Version="6.2.0" />
 		<PackageReference Include="Emgu.CV" Version="4.5.3.4721" />
 		<PackageReference Include="Emgu.CV.runtime.windows" Version="4.5.3.4721" />
 		<PackageReference Include="Google.Apis.Drive.v3" Version="1.54.0.2397" />
@@ -21,6 +22,10 @@
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Adapters\" />
 	</ItemGroup>
 
 	<!--The following is needed for windows automation-->
