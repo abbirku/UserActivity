@@ -1,13 +1,10 @@
 ﻿using Infrastructure.DirectoryManager;
 using Infrastructure.GoogleDriveApi;
-using Infrastructure.RunningPrograms;
 using Infrastructure.Services;
 using Infrastructure.ActiveProgram;
 using System;
 using System.Threading.Tasks;
 using Infrastructure.BrowserActivity;
-using Google.Apis.Upload;
-using System.Linq;
 using Google.Apis.Drive.v3.Data;
 using System.Collections.Generic;
 using CoreActivities.EgmaCV;

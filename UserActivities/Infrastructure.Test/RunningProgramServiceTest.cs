@@ -1,5 +1,5 @@
 ﻿using Autofac.Extras.Moq;
-using Infrastructure.RunningPrograms;
+using Infrastructure.Services;
 using Infrastructure.FileManager;
 using Moq;
 using NUnit.Framework;
@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using CoreActivities.RunningPrograms;
 
 namespace Infrastructure.Test
 {
@@ -16,7 +17,7 @@ namespace Infrastructure.Test
     {
         private AutoMock _mock;
         private Mock<IFileAdapter> _fileAdapterMoc;
-        private Mock<IRunningProgramAdapter> _runningProgramAdapterMoc;
+        private Mock<IRunningPrograms> _runningProgramAdapterMoc;
         private RunningProgramService _runningProgramService;
 
         [OneTimeSetUp]
@@ -29,7 +30,7 @@ namespace Infrastructure.Test
         public void SetUp()
         {
             _fileAdapterMoc = _mock.Mock<IFileAdapter>();
-            _runningProgramAdapterMoc = _mock.Mock<IRunningProgramAdapter>();
+            _runningProgramAdapterMoc = _mock.Mock<IRunningPrograms>();
             _runningProgramService = _mock.Create<RunningProgramService>();
         }
 

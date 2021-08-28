@@ -1,11 +1,10 @@
-﻿using Infrastructure.FileManager;
+﻿using CoreActivities.RunningPrograms;
+using Infrastructure.FileManager;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.RunningPrograms
+namespace Infrastructure.Services
 {
     public interface IRunningProgramService
     {
@@ -16,13 +15,13 @@ namespace Infrastructure.RunningPrograms
     public class RunningProgramService : IRunningProgramService
     {
         private readonly IFileAdapter _fileAdapter;
-        private readonly IRunningProgramAdapter _runningProgramAdapter;
+        private readonly IRunningPrograms _runningPrograms;
 
         public RunningProgramService(IFileAdapter fileAdapter,
-            IRunningProgramAdapter runningProgramAdapter)
+            IRunningPrograms runningPrograms)
         {
             _fileAdapter = fileAdapter;
-            _runningProgramAdapter = runningProgramAdapter;
+            _runningPrograms = runningPrograms;
         }
 
         public async Task CaptureProcessNameAsync(string filePath)
@@ -30,7 +29,7 @@ namespace Infrastructure.RunningPrograms
             if (string.IsNullOrEmpty(filePath) || !filePath.Contains("txt"))
                 throw new Exception("Provide a valid txt file");
 
-            var processes = _runningProgramAdapter.GetRunningProcessList().Select((x, index) =>
+            var processes = _runningPrograms.GetRunningProcessList().Select((x, index) =>
             {
                 return $"{index + 1}. {x}";
             }).ToList();
@@ -43,7 +42,7 @@ namespace Infrastructure.RunningPrograms
             if (string.IsNullOrEmpty(filePath) || !filePath.Contains("txt"))
                 throw new Exception("Provide a valid txt file");
 
-            var programTitles = _runningProgramAdapter.GetRunningProgramsList().Select((x, index) =>
+            var programTitles = _runningPrograms.GetRunningProgramsList().Select((x, index) =>
             {
                 return $"{index + 1}. {x}";
             }).ToList();
