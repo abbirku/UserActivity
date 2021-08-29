@@ -1,4 +1,5 @@
-﻿using Infrastructure.FileManager;
+﻿using CoreActivities.ActiveProgram;
+using Infrastructure.FileManager;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,13 +15,13 @@ namespace Infrastructure.ActiveProgram
     public class ActiveProgramService : IActiveProgramService
     {
         private readonly IFileAdapter _fileAdapter;
-        private readonly IActiveProgramAdapter _activeProgramAdapter;
+        private readonly IActiveProgram _activeProgram;
 
         public ActiveProgramService(IFileAdapter fileAdapter,
-            IActiveProgramAdapter activeProgramAdapter)
+            IActiveProgram activeProgram)
         {
             _fileAdapter = fileAdapter;
-            _activeProgramAdapter = activeProgramAdapter;
+            _activeProgram = activeProgram;
         }
 
         public async Task CaptureActiveProgramTitleAsync(string filePath)
@@ -28,7 +29,7 @@ namespace Infrastructure.ActiveProgram
             if (string.IsNullOrEmpty(filePath) || !filePath.Contains("txt"))
                 throw new Exception("Provide a valid txt file");
 
-            var windowTitle = _activeProgramAdapter.GetActiveWindowTitle();
+            var windowTitle = _activeProgram.CaptureActiveProgramTitle();
             var parts = windowTitle.Split("\\");
 
             await _fileAdapter.AppendAllTextAsync(parts[^1], filePath);

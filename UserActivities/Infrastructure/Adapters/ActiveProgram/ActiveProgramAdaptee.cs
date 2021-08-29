@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Infrastructure.ActiveProgram
+namespace CoreActivities.ActiveProgram
 {
-    public interface IActiveProgramAdapter
-    {
-        string GetActiveWindowTitle();
-    }
-
-    public class ActiveProgramAdapter : IActiveProgramAdapter
+    public class ActiveProgramAdaptee
     {
         [DllImport("user32.dll")]
         static extern IntPtr GetForegroundWindow();

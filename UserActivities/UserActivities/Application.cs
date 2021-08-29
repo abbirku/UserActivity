@@ -73,10 +73,10 @@ namespace UserActivities
                 await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
                 ////Capture active window title and sync to google drive 
-                //fileName = $"ActiveWindow-{Guid.NewGuid()}.txt";
-                //filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
-                //await _activeProgramService.CaptureActiveProgramTitleAsync(filePath);
-                //await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
+                fileName = $"ActiveWindow-{Guid.NewGuid()}.txt";
+                filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
+                await _activeProgramService.CaptureActiveProgramTitleAsync(filePath);
+                await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
                 ////Capture open browser tab title and sync to google drive
                 //fileName = $"Tabs-{Guid.NewGuid()}.txt";
