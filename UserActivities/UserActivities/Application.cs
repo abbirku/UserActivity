@@ -8,6 +8,7 @@ using Infrastructure.BrowserActivity;
 using Google.Apis.Drive.v3.Data;
 using System.Collections.Generic;
 using CoreActivities.EgmaCV;
+using CoreActivities.BrowserActivity;
 
 namespace UserActivities
 {
@@ -79,16 +80,16 @@ namespace UserActivities
                 await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
                 ////Capture open browser tab title and sync to google drive
-                //fileName = $"Tabs-{Guid.NewGuid()}.txt";
-                //filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
-                //await _browserActivityService.EnlistAllOpenTabs("chrome", filePath);
-                //await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
+                fileName = $"Tabs-{Guid.NewGuid()}.txt";
+                filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
+                await _browserActivityService.EnlistAllOpenTabs(BrowserType.Chrome, filePath);
+                await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
                 ////Capture active tab url and sync to google drive
-                //fileName = $"Url-{Guid.NewGuid()}.txt";
-                //filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
-                //await _browserActivityService.EnlistActiveTabUrl("chrome", filePath);
-                //await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
+                fileName = $"Url-{Guid.NewGuid()}.txt";
+                filePath = _directoryManagerService.CreateProgramDataFilePath(_folderName, fileName);
+                await _browserActivityService.EnlistActiveTabUrl(BrowserType.Chrome, filePath);
+                await _googleDriveApiManagerAdapter.UploadFileAsync(filePath);
 
                 //var files = await PrintFilesInAGoogleDirectory();
                 //var input = Console.ReadLine();
