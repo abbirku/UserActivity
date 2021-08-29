@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using CoreActivities.EgmaCV;
 using CoreActivities.ScreenCapture;
 using CoreActivities.RunningPrograms;
+using CoreActivities.ActiveProgram;
+using CoreActivities.BrowserActivity;
 
 namespace UserActivities
 {
@@ -24,25 +26,27 @@ namespace UserActivities
             builder.RegisterModule(new EgmaCvPackage());
             builder.RegisterModule(new ScreenCapturePackage());
             builder.RegisterModule(new RunningProgramPackage());
+            builder.RegisterModule(new ActiveProgramPackage());
+            builder.RegisterModule(new ActiveProgramPackage());
+            builder.RegisterModule(new BrowserActivityPackage());
 
             //Adapter
             builder.RegisterType<DirectoryManagerAdapter>().As<IDirectoryManagerAdapter>();
             builder.RegisterType<FileAdapter>().As<IFileAdapter>();
             builder.RegisterType<FileStreamAdapter>().As<IFileStreamAdapter>();
-            builder.RegisterType<ActiveProgramAdapter>().As<IActiveProgramAdapter>();
-            builder.RegisterType<BrowserActivityAdapter>().As<IBrowserActivityAdapter>();
             builder.RegisterType<FileInfoAdapter>().As<IFileInfoAdapter>();
             builder.RegisterType<GoogleDriveApiManagerAdapter>().As<IGoogleDriveApiManagerAdapter>()
                    .WithParameter("authfilePath", AppSettingsInfo.CreateGoogleDriveAuthFile(AppSettingsInfo.GetCurrentValue<string>("AuthFileName")))
                    .WithParameter("directoryId", AppSettingsInfo.GetCurrentValue<string>("DirectoryId"));
 
             //Service
-            builder.RegisterType<DirectoryManagerService>().As<IDirectoryManagerService>();
-            builder.RegisterType<FileManagerService>().As<IFileManagerService>();
-            builder.RegisterType<ScreenCaptureService>().As<IScreenCaptureService>();
             builder.RegisterType<RunningProgramService>().As<IRunningProgramService>();
             builder.RegisterType<ActiveProgramService>().As<IActiveProgramService>();
+            builder.RegisterType<ScreenCaptureService>().As<IScreenCaptureService>();
             builder.RegisterType<BrowserActivityService>().As<IBrowserActivityService>();
+
+            builder.RegisterType<DirectoryManagerService>().As<IDirectoryManagerService>();
+            builder.RegisterType<FileManagerService>().As<IFileManagerService>();
             
             return builder.Build();
         }

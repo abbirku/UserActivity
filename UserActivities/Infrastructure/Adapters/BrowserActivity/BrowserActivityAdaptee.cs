@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Automation;
 
-namespace Infrastructure.BrowserActivity
+namespace CoreActivities.BrowserActivity
 {
-    public interface IBrowserActivityAdapter
+    public class BrowserActivityAdaptee
     {
-        IList<string> GetOpenTabsInfos(string browserName);
-        string GetActiveTabUrl(string browserName);
-    }
+        private readonly BrowserActivityEnumAdaptee _browserActivityEnumAdaptee;
 
-    public class BrowserActivityAdapter : IBrowserActivityAdapter
-    {
-        public string GetActiveTabUrl(string browserName)
+        public BrowserActivityAdaptee(BrowserActivityEnumAdaptee browserActivityEnumAdaptee)
+            => _browserActivityEnumAdaptee = browserActivityEnumAdaptee;
+
+        public string GetActiveTabUrl(BrowserType browserType)
         {
             try
             {
                 // There are always multiple chrome processes, so we have to loop through all of them to find the
                 // process with a Window Handle and an automation element of name "Address and search bar"
 
+                var browserName = _browserActivityEnumAdaptee.ToDescriptionString(browserType);
                 var browserProcess = Process.GetProcessesByName(browserName);
+
                 if (browserProcess.Length > 0)
                 {
                     var url = string.Empty;
@@ -58,21 +59,20 @@ namespace Infrastructure.BrowserActivity
             }
         }
 
-        public IList<string> GetOpenTabsInfos(string browserName)
+        public IList<string> GetOpenTabsInfos(BrowserType browserType)
         {
             try
             {
                 var tabInfos = new List<string>();
 
-                if (string.IsNullOrWhiteSpace(browserName))
-                    throw new Exception("Provide valid browser name");
+                var browserName = _browserActivityEnumAdaptee.ToDescriptionString(browserType);
+                var processes = Process.GetProcessesByName(browserName);
 
-                var chromeProcesses = Process.GetProcessesByName("chrome");
-                if (chromeProcesses.Length <= 0)
+                if (processes.Length <= 0)
                     throw new Exception($"No process found with this {browserName} name");
                 else
                 {
-                    foreach (Process proc in chromeProcesses)
+                    foreach (var proc in processes)
                     {
                         if (proc.MainWindowHandle != IntPtr.Zero)
                         {
