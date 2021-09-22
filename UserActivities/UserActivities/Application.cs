@@ -77,7 +77,7 @@ namespace UserActivities
                             }
                             else if (option == "2")
                             {
-                                var allTabs = _browserActivity.EnlistAllOpenTabs(BrowserType.Chrome);
+                                var allTabs = _browserActivity.EnlistAllOpenTabs(BrowserType.Chrome).OrderBy(x => x).ToList();
                                 PrintResult(allTabs);
                             }
                             else
@@ -93,12 +93,12 @@ namespace UserActivities
 
                             if (option == "1")
                             {
-                                var results = _runningProgram.GetRunningProgramsList();
+                                var results = _runningProgram.GetRunningProgramsList().OrderBy(x => x).ToList();
                                 PrintResult(results);
                             }
                             else if (option == "2")
                             {
-                                var results = _runningProgram.GetRunningProcessList();
+                                var results = _runningProgram.GetRunningProcessList().OrderBy(x => x).ToList();
                                 PrintResult(results);
                             }
                             else
@@ -135,21 +135,19 @@ namespace UserActivities
             if (main != 0)
             {
                 for (int i = 0; i < main; i += 3)
-                {
-                    var data = (results[i], results[i+1], results[i+2]);
-                    tupleList.Add(data);
-                }
-
-                Console.WriteLine(tupleList.AsEnumerable().ToStringTable(
-                    new[] { "", "", "" },
-                    a => a.Item1, a => a.Item2, a => a.Item3));
+                    tupleList.Add((results[i], results[i + 1], results[i + 2]));
             }
 
-            //if (left != 0)
-            //{
-            //    for (int i = main; i < results.Count; i += 1)
-            //        Console.Write($"({i + 1}). {results[i]}    ");
-            //}
+            if (left != 0 && left == 1)
+                tupleList.Add((results[main], string.Empty, string.Empty));
+            else if (left != 0 && left == 2)
+                tupleList.Add((results[main], results[main + 1], string.Empty));
+            else if (left != 0 && left == 3)
+                tupleList.Add((results[main], results[main + 1], results[main + 2]));
+
+            Console.WriteLine(tupleList.AsEnumerable().ToStringTable(
+                    new[] { "", "", "" },
+                    a => a.Item1, a => a.Item2, a => a.Item3));
 
             Console.WriteLine();
         }
