@@ -35,6 +35,7 @@ namespace Infrastructure.GoogleDriveApi
         private readonly IFileInfoAdapter _fileInfoAdapter;
         private readonly DriveService _driveService;
         private long _fileSize;
+        private long _downloaded;
 
         public GoogleDriveApiManagerAdapter(string authfilePath,
             string directoryId,
@@ -183,7 +184,28 @@ namespace Infrastructure.GoogleDriveApi
         # region Private section
         private void UploadProgress(IUploadProgress progress)
         {
-            DrawTextProgressBar(progress.BytesSent, _fileSize);
+            _downloaded = 0;
+            PrintProgressByPercentage(progress.BytesSent, _fileSize);
+        }
+
+        private void PrintProgressByPercentage(long progress, long total)
+        {
+            _downloaded += progress;
+            Console.WriteLine($"Downloaded: {100 * _downloaded / total}%");
+
+            if (_downloaded != total)
+                ClearCurrentConsoleLine();
+        }
+
+        public void ClearCurrentConsoleLine()
+        {
+            if (Console.CursorTop > 0)
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+
+            int currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, currentLineCursor);
         }
 
         private void DrawTextProgressBar(long progress, long total)
