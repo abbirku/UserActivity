@@ -1,13 +1,12 @@
 ﻿using Autofac.Extras.Moq;
+using CoreActivities.ActiveProgram;
+using CoreActivities.FileManager;
 using Infrastructure.ActiveProgram;
-using Infrastructure.FileManager;
 using Moq;
 using NUnit.Framework;
 using Shouldly;
 using System;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Infrastructure.Test
 {
@@ -15,8 +14,8 @@ namespace Infrastructure.Test
     public class ActiveProgramServiceTest
     {
         private AutoMock _mock;
-        private Mock<IFileAdapter> _fileAdapterMoc;
-        private Mock<IActiveProgramAdapter> _activeProgramAdapterMoc;
+        private Mock<IFile> _fileAdapterMoc;
+        private Mock<IActiveProgram> _activeProgramAdapterMoc;
         private ActiveProgramService _activeProgramService;
 
         [OneTimeSetUp]
@@ -28,8 +27,8 @@ namespace Infrastructure.Test
         [SetUp]
         public void SetUp()
         {
-            _fileAdapterMoc = _mock.Mock<IFileAdapter>();
-            _activeProgramAdapterMoc = _mock.Mock<IActiveProgramAdapter>();
+            _fileAdapterMoc = _mock.Mock<IFile>();
+            _activeProgramAdapterMoc = _mock.Mock<IActiveProgram>();
             _activeProgramService = _mock.Create<ActiveProgramService>();
         }
 
@@ -48,7 +47,7 @@ namespace Infrastructure.Test
             var filePath = "C:\\Test\\file.txt";
             var activeWindow = "vscode.exe";
 
-            _activeProgramAdapterMoc.Setup(x => x.GetActiveWindowTitle()).Returns(activeWindow).Verifiable();
+            _activeProgramAdapterMoc.Setup(x => x.CaptureActiveProgramTitle()).Returns(activeWindow).Verifiable();
             _fileAdapterMoc.Setup(x => x.AppendAllTextAsync(activeWindow, filePath)).Returns(Task.CompletedTask).Verifiable();
 
             //Act

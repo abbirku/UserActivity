@@ -1,5 +1,5 @@
 ﻿using CoreActivities.ActiveProgram;
-using Infrastructure.FileManager;
+using CoreActivities.FileManager;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,10 +14,10 @@ namespace Infrastructure.ActiveProgram
 
     public class ActiveProgramService : IActiveProgramService
     {
-        private readonly IFileAdapter _fileAdapter;
+        private readonly IFile _fileAdapter;
         private readonly IActiveProgram _activeProgram;
 
-        public ActiveProgramService(IFileAdapter fileAdapter,
+        public ActiveProgramService(IFile fileAdapter,
             IActiveProgram activeProgram)
         {
             _fileAdapter = fileAdapter;

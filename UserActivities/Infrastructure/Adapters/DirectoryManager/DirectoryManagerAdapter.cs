@@ -1,20 +1,20 @@
 ﻿using System;
 
-namespace Infrastructure.DirectoryManager
+namespace CoreActivities.DirectoryManager
 {
-    public interface IDirectoryManagerService
+    public interface IDirectoryManager
     {
-        bool ChecknCreateDirectory(string directoryPath);
         string GetProgramDataDirectoryPath(string appFolder);
+        bool ChecknCreateDirectory(string directoryPath);
         string CreateProgramDataFilePath(string folderName, string fileName);
     }
 
-    public class DirectoryManagerService : IDirectoryManagerService
+    public class DirectoryManagerAdapter : IDirectoryManager
     {
-        private readonly IDirectoryManagerAdapter _directoryManagerAdapter;
+        private readonly DirectoryManagerAdaptee _directoryManagerAdaptee;
 
-        public DirectoryManagerService(IDirectoryManagerAdapter directoryManagerAdapter)
-            => _directoryManagerAdapter = directoryManagerAdapter;
+        public DirectoryManagerAdapter(DirectoryManagerAdaptee directoryManagerAdaptee)
+            => _directoryManagerAdaptee = directoryManagerAdaptee;
 
         /// <summary>
         /// Given a directory path of a folder it creates the folder under the directory if not exists
@@ -24,9 +24,9 @@ namespace Infrastructure.DirectoryManager
             if (string.IsNullOrWhiteSpace(directoryPath))
                 return false;
 
-            if (!_directoryManagerAdapter.Exists(directoryPath))
+            if (!_directoryManagerAdaptee.Exists(directoryPath))
             {
-                _directoryManagerAdapter.CreateDirectory(directoryPath);
+                _directoryManagerAdaptee.CreateDirectory(directoryPath);
                 return true;
             }
             else
@@ -41,7 +41,7 @@ namespace Infrastructure.DirectoryManager
             if (string.IsNullOrWhiteSpace(appFolder))
                 throw new Exception("App folder string is empty.");
 
-            return $"{_directoryManagerAdapter.CommonApplicationPath}\\{appFolder}";
+            return $"{_directoryManagerAdaptee.CommonApplicationPath}\\{appFolder}";
         }
 
         /// <summary>

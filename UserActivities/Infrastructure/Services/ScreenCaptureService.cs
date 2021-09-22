@@ -1,5 +1,5 @@
 ﻿using CoreActivities.ScreenCapture;
-using Infrastructure.FileManager;
+using CoreActivities.FileManager;
 using System;
 using System.Threading.Tasks;
 
@@ -12,13 +12,13 @@ namespace Infrastructure.Services
 
     public class ScreenCaptureService : IScreenCaptureService
     {
-        private readonly IFileManagerService _fileManagerService;
+        private readonly IFileManager _fileManager;
         private readonly IScreenCapture _screenCapture;
 
-        public ScreenCaptureService(IFileManagerService fileManagerService,
+        public ScreenCaptureService(IFileManager fileManager,
             IScreenCapture screenCapture)
         {
-            _fileManagerService = fileManagerService;
+            _fileManager = fileManager;
             _screenCapture = screenCapture;
         }
 
@@ -34,7 +34,7 @@ namespace Infrastructure.Services
                 if (image == null)
                     throw new Exception("Image capture not successful");
 
-                _fileManagerService.SaveBitmapImage(filePath, image);
+                _fileManager.SaveBitmapImage(filePath, image);
             });
         }
     }

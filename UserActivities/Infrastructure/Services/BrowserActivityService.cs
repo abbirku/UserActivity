@@ -1,5 +1,5 @@
 ﻿using CoreActivities.BrowserActivity;
-using Infrastructure.FileManager;
+using CoreActivities.FileManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +16,11 @@ namespace Infrastructure.BrowserActivity
 
     public class BrowserActivityService : IBrowserActivityService
     {
-        private readonly IFileAdapter _fileAdapter;
+        private readonly IFile _fileAdapter;
         private readonly IBrowserActivity _browserActivity;
         private readonly BrowserActivityEnumAdaptee _browserActivityEnumAdaptee;
 
-        public BrowserActivityService(IFileAdapter fileAdapter,
+        public BrowserActivityService(IFile fileAdapter,
             IBrowserActivity browserActivity,
             BrowserActivityEnumAdaptee browserActivityEnumAdaptee)
         {

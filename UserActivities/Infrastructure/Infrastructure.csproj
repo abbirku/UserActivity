@@ -21,10 +21,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="DirectoryManager\DirectoryManager.cs~RFa0007db.TMP" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Adapters\" />
+		<None Remove="Adapters\DirectoryManager\DirectoryManager.cs~RFa0007db.TMP" />
 	</ItemGroup>
 </Project>
