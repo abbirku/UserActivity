@@ -6,6 +6,12 @@ using Infrastructure.BrowserActivity;
 using CoreActivities.EgmaCV;
 using CoreActivities.DirectoryManager;
 using CoreActivities.GoogleDriveApi;
+using CoreActivities.ActiveProgram;
+using System.Collections;
+using System.Collections.Generic;
+using CoreActivities.BrowserActivity;
+using CoreActivities.RunningPrograms;
+using System.Linq;
 
 namespace UserActivities
 {
@@ -15,44 +21,145 @@ namespace UserActivities
         private readonly IDirectoryManager _directoryManagerService;
         private readonly IGoogleDriveApiManager _googleDriveApiManagerAdapter;
         private readonly IScreenCaptureService _screenCaptureService;
-        private readonly IRunningProgramService _runningProgramService;
-        private readonly IActiveProgramService _activeProgramService;
-        private readonly IBrowserActivityService _browserActivityService;
+        private readonly IRunningPrograms _runningProgram;
+        private readonly IActiveProgram _activeProgram;
+        private readonly IBrowserActivity _browserActivity;
         private string _folderName;
 
         public Application(IEgmaCv egmaCv,
             IScreenCaptureService screenCaptureService,
-            IRunningProgramService runningProgramService,
+            IRunningPrograms runningProgram,
             IDirectoryManager directoryManagerService,
             IGoogleDriveApiManager googleDriveApiManagerAdapter,
-            IActiveProgramService activeProgramService,
-            IBrowserActivityService browserActivityService)
+            IActiveProgram activeProgram,
+            IBrowserActivity browserActivity)
         {
             _egmaCv = egmaCv;
             _screenCaptureService = screenCaptureService;
-            _runningProgramService = runningProgramService;
-
-            _directoryManagerService = directoryManagerService ?? throw new ArgumentNullException(nameof(directoryManagerService));
+            _runningProgram = runningProgram;
+            _directoryManagerService = directoryManagerService;
             _folderName = AppSettingsInfo.GetCurrentValue<string>("FolderName");
             _googleDriveApiManagerAdapter = googleDriveApiManagerAdapter;
-            _activeProgramService = activeProgramService;
-            _browserActivityService = browserActivityService;
+            _activeProgram = activeProgram;
+            _browserActivity = browserActivity;
         }
 
         public async Task Run()
         {
             try
             {
-                Console.WriteLine("Starting User Activities");
+                Console.WriteLine("Starting User Activities...");
+                await Task.Run(() =>
+                {
+                    while (true)
+                    {
+                        Console.WriteLine("Select an active (Provide number as input)");
+                        Console.WriteLine("1. Active Program");
+                        Console.WriteLine("2. Browser Activity");
+                        Console.WriteLine("3. Running Programs");
 
-                
+                        var option = Console.ReadLine();
+                        if (option == "1")
+                        {
+                            var title = _activeProgram.CaptureActiveProgramTitle();
+                            PrintResult(title);
+                        }
+                        else if (option == "2")
+                        {
+                            Console.WriteLine("1. EnList Active Tab Url");
+                            Console.WriteLine("2. EnList Open Tabs");
+                            option = Console.ReadLine();
 
-                Console.WriteLine("Done");
+                            if (option == "1")
+                            {
+                                var activeTabUrl = _browserActivity.EnlistActiveTabUrl(BrowserType.Chrome);
+                                PrintResult(activeTabUrl);
+                            }
+                            else if (option == "2")
+                            {
+                                var allTabs = _browserActivity.EnlistAllOpenTabs(BrowserType.Chrome);
+                                PrintResult(allTabs);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Provide a valid option number");
+                            }
+                        }
+                        else if (option == "3")
+                        {
+                            Console.WriteLine("1. Programs");
+                            Console.WriteLine("2. Processes");
+                            option = Console.ReadLine();
+
+                            if (option == "1")
+                            {
+                                var results = _runningProgram.GetRunningProgramsList();
+                                PrintResult(results);
+                            }
+                            else if (option == "2")
+                            {
+                                var results = _runningProgram.GetRunningProcessList();
+                                PrintResult(results);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Provide a valid option number");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Provide a valid option number");
+                        }
+
+                        ClearScreen();
+                    }
+                });
             }
             catch (Exception exp)
             {
                 Console.WriteLine(exp.Message);
             }
+        }
+
+        private void PrintResult(string result)
+        {
+            Console.WriteLine(result);
+        }
+
+        private void PrintResult(IList<string> results)
+        {
+            var tupleList = new List<(string, string, string)>();
+            var main = results.Count - (results.Count % 3);
+            var left = results.Count % 3;
+
+            if (main != 0)
+            {
+                for (int i = 0; i < main; i += 3)
+                {
+                    var data = (results[i], results[i+1], results[i+2]);
+                    tupleList.Add(data);
+                }
+
+                Console.WriteLine(tupleList.AsEnumerable().ToStringTable(
+                    new[] { "", "", "" },
+                    a => a.Item1, a => a.Item2, a => a.Item3));
+            }
+
+            //if (left != 0)
+            //{
+            //    for (int i = main; i < results.Count; i += 1)
+            //        Console.Write($"({i + 1}). {results[i]}    ");
+            //}
+
+            Console.WriteLine();
+        }
+
+        private void ClearScreen()
+        {
+            Console.WriteLine("Clear Screen? (y/n)");
+            var option = Console.ReadLine();
+            if (option == "y")
+                Console.Clear();
         }
     }
 }
