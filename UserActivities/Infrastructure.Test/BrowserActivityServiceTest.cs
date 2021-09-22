@@ -1,7 +1,5 @@
 ﻿using Autofac.Extras.Moq;
-using Infrastructure.ActiveProgram;
 using Infrastructure.BrowserActivity;
-using Infrastructure.FileManager;
 using Moq;
 using NUnit.Framework;
 using Shouldly;
@@ -10,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoreActivities.FileManager;
+using CoreActivities.BrowserActivity;
 
 namespace Infrastructure.Test
 {
@@ -17,8 +17,8 @@ namespace Infrastructure.Test
     public class BrowserActivityServiceTest
     {
         private AutoMock _mock;
-        private Mock<IFileAdapter> _fileAdapterMoc;
-        private Mock<IBrowserActivityAdapter> _browserActivityAdapterMoc;
+        private Mock<IFile> _fileAdapterMoc;
+        private Mock<IBrowserActivity> _browserActivityAdapterMoc;
         private BrowserActivityService _browserActivityService;
 
         [OneTimeSetUp]
@@ -30,8 +30,8 @@ namespace Infrastructure.Test
         [SetUp]
         public void SetUp()
         {
-            _fileAdapterMoc = _mock.Mock<IFileAdapter>();
-            _browserActivityAdapterMoc = _mock.Mock<IBrowserActivityAdapter>();
+            _fileAdapterMoc = _mock.Mock<IFile>();
+            _browserActivityAdapterMoc = _mock.Mock<IBrowserActivity>();
             _browserActivityService = _mock.Create<BrowserActivityService>();
         }
 
@@ -47,7 +47,6 @@ namespace Infrastructure.Test
         {
             //Arrange
             var filePath = "C:\\Test\\file.txt";
-            var browser = "chrome";
             var tabs = new List<string>
             {
                 "tab1",
@@ -57,11 +56,11 @@ namespace Infrastructure.Test
                 return $"{index + 1}. {x}";
             }).ToList();
 
-            _browserActivityAdapterMoc.Setup(x => x.GetOpenTabsInfos(browser)).Returns(tabs).Verifiable();
+            _browserActivityAdapterMoc.Setup(x => x.EnlistAllOpenTabs(BrowserType.Chrome)).Returns(tabs).Verifiable();
             _fileAdapterMoc.Setup(x => x.AppendAllLineAsync(serTabs, filePath)).Returns(Task.CompletedTask).Verifiable();
 
             //Act
-            await _browserActivityService.EnlistAllOpenTabs(browser, filePath);
+            await _browserActivityService.EnlistAllOpenTabs(BrowserType.Chrome, filePath);
 
             //Assert
             this.ShouldSatisfyAllConditions(
@@ -83,7 +82,7 @@ namespace Infrastructure.Test
         public void EnlistAllOpenTabs_ForInvalidFilePathAndBrowserName_ThrowException(string browserName, string filePath)
         {
             //Act & Assert
-            Should.Throw<Exception>(() => _browserActivityService.EnlistActiveTabUrl(browserName, filePath));
+            Should.Throw<Exception>(() => _browserActivityService.EnlistActiveTabUrl(BrowserType.Chrome, filePath));
         }
 
         [Test, Category("Unit Test")]
@@ -94,11 +93,11 @@ namespace Infrastructure.Test
             var browser = "chrome";
             var url = "www.google.com/test";
 
-            _browserActivityAdapterMoc.Setup(x => x.GetActiveTabUrl(browser)).Returns(url).Verifiable();
+            _browserActivityAdapterMoc.Setup(x => x.EnlistActiveTabUrl(BrowserType.Chrome)).Returns(url).Verifiable();
             _fileAdapterMoc.Setup(x => x.AppendAllTextAsync("www.google.com", filePath)).Returns(Task.CompletedTask).Verifiable();
 
             //Act
-            await _browserActivityService.EnlistActiveTabUrl(browser, filePath);
+            await _browserActivityService.EnlistActiveTabUrl(BrowserType.Chrome, filePath);
 
             //Assert
             this.ShouldSatisfyAllConditions(
@@ -120,7 +119,7 @@ namespace Infrastructure.Test
         public void EnlistActiveTabUrl_ForInvalidFilePathAndBrowserName_ThrowException(string browserName, string filePath)
         {
             //Act & Assert
-            Should.Throw<Exception>(() => _browserActivityService.EnlistActiveTabUrl(browserName, filePath));
+            Should.Throw<Exception>(() => _browserActivityService.EnlistActiveTabUrl(BrowserType.Chrome, filePath));
         }
 
         [Test, Category("Unit Test")]
@@ -131,12 +130,11 @@ namespace Infrastructure.Test
         {
             //Arrange
             var filePath = "C:\\Test\\file.txt";
-            var browser = "chrome";
 
-            _browserActivityAdapterMoc.Setup(x => x.GetActiveTabUrl(browser)).Returns(url).Verifiable();
+            _browserActivityAdapterMoc.Setup(x => x.EnlistActiveTabUrl(BrowserType.Chrome)).Returns(url).Verifiable();
 
             //Act & Assert
-            Should.Throw<Exception>(() => _browserActivityService.EnlistActiveTabUrl(browser, filePath));
+            Should.Throw<Exception>(() => _browserActivityService.EnlistActiveTabUrl(BrowserType.Chrome, filePath));
         }
     }
 }

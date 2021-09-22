@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
-namespace Infrastructure.FileManager
+namespace CoreActivities.FileManager
 {
-    public interface IFileInfoAdapter
+    public interface IFileInfo
     {
         long FileSize(string filePath);
         bool IsReadOnly(string filePath);
@@ -14,9 +12,8 @@ namespace Infrastructure.FileManager
         DateTime LastUpdateOn(string filePath);
     }
 
-    public class FileInfoAdapter : IFileInfoAdapter
+    public class FileInfoAdapter : IFileInfo
     {
-
         private FileInfo ObjectCreationAndValidation(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))

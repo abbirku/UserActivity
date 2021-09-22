@@ -1,5 +1,5 @@
 ﻿using CoreActivities.RunningPrograms;
-using Infrastructure.FileManager;
+using CoreActivities.FileManager;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,10 +14,10 @@ namespace Infrastructure.Services
 
     public class RunningProgramService : IRunningProgramService
     {
-        private readonly IFileAdapter _fileAdapter;
+        private readonly IFile _fileAdapter;
         private readonly IRunningPrograms _runningPrograms;
 
-        public RunningProgramService(IFileAdapter fileAdapter,
+        public RunningProgramService(IFile fileAdapter,
             IRunningPrograms runningPrograms)
         {
             _fileAdapter = fileAdapter;
