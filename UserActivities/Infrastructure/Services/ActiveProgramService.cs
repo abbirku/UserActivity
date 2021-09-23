@@ -1,38 +1,42 @@
 ﻿using CoreActivities.ActiveProgram;
+using CoreActivities.DirectoryManager;
+using CoreActivities.Extensions;
 using CoreActivities.FileManager;
+using Infrastructure.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infrastructure.ActiveProgram
 {
     public interface IActiveProgramService
     {
-        Task CaptureActiveProgramTitleAsync(string filePath);
+        Task CaptureActiveProgramTitleAsync();
     }
 
     public class ActiveProgramService : IActiveProgramService
     {
-        private readonly IFile _fileAdapter;
+        private readonly IFile _file;
         private readonly IActiveProgram _activeProgram;
+        private readonly IConsoleHelper _consoleHelper;
 
-        public ActiveProgramService(IFile fileAdapter,
-            IActiveProgram activeProgram)
+        public ActiveProgramService(IFile file,IActiveProgram activeProgram,
+            IConsoleHelper consoleHelper)
         {
-            _fileAdapter = fileAdapter;
+            _file = file;
             _activeProgram = activeProgram;
+            _consoleHelper = consoleHelper;
         }
 
-        public async Task CaptureActiveProgramTitleAsync(string filePath)
+        public async Task CaptureActiveProgramTitleAsync()
         {
-            if (string.IsNullOrEmpty(filePath) || !filePath.Contains("txt"))
-                throw new Exception("Provide a valid txt file");
+            var title = _activeProgram.CaptureActiveProgramTitle();
+            var parts = title.Split("\\");
+            parts[^1].PrintResult();
 
-            var windowTitle = _activeProgram.CaptureActiveProgramTitle();
-            var parts = windowTitle.Split("\\");
-
-            await _fileAdapter.AppendAllTextAsync(parts[^1], filePath);
+            await _consoleHelper.SaveResultToFileAsync(async (title, filePath) =>
+            {
+                await _file.AppendAllTextAsync(title, filePath);
+            }, parts[^1]);
         }
     }
 }

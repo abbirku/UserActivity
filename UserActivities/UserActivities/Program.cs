@@ -39,6 +39,7 @@ namespace UserActivities
             builder.RegisterType<BrowserActivityService>().As<IBrowserActivityService>();
             builder.RegisterType<RunningProgramService>().As<IRunningProgramService>();
             builder.RegisterType<ScreenCaptureService>().As<IScreenCaptureService>();
+            builder.RegisterType<ConsoleHelper>().As<IConsoleHelper>();
 
             return builder.Build();
         }
