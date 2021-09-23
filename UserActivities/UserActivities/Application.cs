@@ -19,30 +19,30 @@ namespace UserActivities
     public class Application
     {
         private readonly IWebCamService _webCamService;
-        private readonly IDirectoryManager _directoryManagerService;
         private readonly IGoogleDriveApiManager _googleDriveApiManagerAdapter;
         private readonly IScreenCaptureService _screenCaptureService;
         private readonly IRunningProgramService _runningProgramService;
         private readonly IActiveProgramService _activeProgramService;
         private readonly IBrowserActivityService _browserActivityService;
+        private readonly IDirectoryService _directoryService;
         private string _folderName;
 
         public Application(IWebCamService webCamService,
             IScreenCaptureService screenCaptureService,
             IRunningProgramService runningProgramService,
-            IDirectoryManager directoryManagerService,
             IGoogleDriveApiManager googleDriveApiManagerAdapter,
             IActiveProgramService activeProgramService,
-            IBrowserActivityService browserActivityService)
+            IBrowserActivityService browserActivityService,
+            IDirectoryService directoryService)
         {
             _webCamService = webCamService;
             _screenCaptureService = screenCaptureService;
             _runningProgramService = runningProgramService;
-            _directoryManagerService = directoryManagerService;
             _folderName = AppSettingsInfo.GetCurrentValue<string>("FolderName");
             _googleDriveApiManagerAdapter = googleDriveApiManagerAdapter;
             _activeProgramService = activeProgramService;
             _browserActivityService = browserActivityService;
+            _directoryService = directoryService;
         }
 
         public async Task Run()
@@ -58,6 +58,7 @@ namespace UserActivities
                     Console.WriteLine("3. Running Programs");
                     Console.WriteLine("4. Screen Capture");
                     Console.WriteLine("5. WebCam");
+                    Console.WriteLine("6. Enlist directory files");
 
                     var option = Console.ReadLine();
                     if (option == "1")
@@ -70,6 +71,8 @@ namespace UserActivities
                         _screenCaptureService.CaptureScreenCaptureActivity();
                     else if (option == "5")
                         await _webCamService.CaptureWebCamActivityAsync();
+                    else if (option == "6")
+                        _directoryService.CaptureDirectoryActivity();
                     else
                         Console.WriteLine("Provide a valid option number");
 

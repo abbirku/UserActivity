@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 
 namespace CoreActivities.DirectoryManager
 {
@@ -7,6 +10,7 @@ namespace CoreActivities.DirectoryManager
         string GetProgramDataDirectoryPath(string appFolder);
         bool ChecknCreateDirectory(string directoryPath);
         string CreateProgramDataFilePath(string folderName, string fileName);
+        IList<string> ListFilesInDirectory(string directoryPath, string pattern = null);
     }
 
     public class DirectoryManagerAdapter : IDirectoryManager
@@ -56,6 +60,17 @@ namespace CoreActivities.DirectoryManager
             ChecknCreateDirectory(directory);
 
             return $"{directory}\\{fileName}";
+        }
+
+        public IList<string> ListFilesInDirectory(string directoryPath, string pattern = null)
+        {
+            if(string.IsNullOrWhiteSpace(directoryPath))
+                throw new Exception("Provide valid directory path");
+
+            if (string.IsNullOrWhiteSpace(pattern))
+                pattern = "*.*";
+
+            return _directoryManagerAdaptee.FilesInDirectory(directoryPath, pattern);
         }
     }
 }

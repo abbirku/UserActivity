@@ -40,6 +40,8 @@ namespace UserActivities
             builder.RegisterType<RunningProgramService>().As<IRunningProgramService>();
             builder.RegisterType<ScreenCaptureService>().As<IScreenCaptureService>();
             builder.RegisterType<ConsoleHelper>().As<IConsoleHelper>();
+            builder.RegisterType<WebCamService>().As<IWebCamService>();
+            builder.RegisterType<DirectoryService>().As<IDirectoryService>();
 
             return builder.Build();
         }

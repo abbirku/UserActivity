@@ -8,6 +8,12 @@ namespace CoreActivities.Extensions
     {
         public static string PrintResult(this IList<string> results)
         {
+            results = results.Select((x, index) =>
+            {
+                x = $"{index+1}. {x}";
+                return x;
+            }).ToList();
+
             var tupleList = new List<(string, string, string)>();
             var main = results.Count - (results.Count % 3);
             var left = results.Count % 3;
