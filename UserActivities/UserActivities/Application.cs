@@ -18,26 +18,26 @@ namespace UserActivities
 {
     public class Application
     {
-        private readonly IEgmaCv _egmaCv;
+        private readonly IWebCamService _webCamService;
         private readonly IDirectoryManager _directoryManagerService;
         private readonly IGoogleDriveApiManager _googleDriveApiManagerAdapter;
         private readonly IScreenCaptureService _screenCaptureService;
-        private readonly IRunningPrograms _runningProgram;
+        private readonly IRunningProgramService _runningProgramService;
         private readonly IActiveProgramService _activeProgramService;
         private readonly IBrowserActivityService _browserActivityService;
         private string _folderName;
 
-        public Application(IEgmaCv egmaCv,
+        public Application(IWebCamService webCamService,
             IScreenCaptureService screenCaptureService,
-            IRunningPrograms runningProgram,
+            IRunningProgramService runningProgramService,
             IDirectoryManager directoryManagerService,
             IGoogleDriveApiManager googleDriveApiManagerAdapter,
             IActiveProgramService activeProgramService,
             IBrowserActivityService browserActivityService)
         {
-            _egmaCv = egmaCv;
+            _webCamService = webCamService;
             _screenCaptureService = screenCaptureService;
-            _runningProgram = runningProgram;
+            _runningProgramService = runningProgramService;
             _directoryManagerService = directoryManagerService;
             _folderName = AppSettingsInfo.GetCurrentValue<string>("FolderName");
             _googleDriveApiManagerAdapter = googleDriveApiManagerAdapter;
@@ -56,6 +56,8 @@ namespace UserActivities
                     Console.WriteLine("1. Active Program");
                     Console.WriteLine("2. Browser Activity");
                     Console.WriteLine("3. Running Programs");
+                    Console.WriteLine("4. Screen Capture");
+                    Console.WriteLine("5. WebCam");
 
                     var option = Console.ReadLine();
                     if (option == "1")
@@ -63,24 +65,11 @@ namespace UserActivities
                     else if (option == "2")
                         await _browserActivityService.CaptureBrowserActivityAsync();
                     else if (option == "3")
-                    {
-                        Console.WriteLine("1. Programs");
-                        Console.WriteLine("2. Processes");
-                        option = Console.ReadLine();
-
-                        if (option == "1")
-                        {
-                            var results = _runningProgram.GetRunningProgramsList().OrderBy(x => x).ToList();
-                            results.PrintResult();
-                        }
-                        else if (option == "2")
-                        {
-                            var results = _runningProgram.GetRunningProcessList().OrderBy(x => x).ToList();
-                            results.PrintResult();
-                        }
-                        else
-                            Console.WriteLine("Provide a valid option number");
-                    }
+                        await _runningProgramService.CaptureRunningPrgramActivityAsync();
+                    else if (option == "4")
+                        _screenCaptureService.CaptureScreenCaptureActivity();
+                    else if (option == "5")
+                        await _webCamService.CaptureWebCamActivityAsync();
                     else
                         Console.WriteLine("Provide a valid option number");
 

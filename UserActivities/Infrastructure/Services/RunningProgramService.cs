@@ -3,51 +3,54 @@ using CoreActivities.FileManager;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreActivities.Extensions;
 
 namespace Infrastructure.Services
 {
     public interface IRunningProgramService
     {
-        Task CaptureProgramTitleAsync(string filePath);
-        Task CaptureProcessNameAsync(string filePath);
+        Task CaptureRunningPrgramActivityAsync();
     }
 
     public class RunningProgramService : IRunningProgramService
     {
-        private readonly IFile _fileAdapter;
+        private readonly IFile _file;
         private readonly IRunningPrograms _runningPrograms;
+        private readonly IConsoleHelper _consoleHelper;
 
-        public RunningProgramService(IFile fileAdapter,
-            IRunningPrograms runningPrograms)
+        public RunningProgramService(IFile file,
+            IRunningPrograms runningPrograms,
+            IConsoleHelper consoleHelper)
         {
-            _fileAdapter = fileAdapter;
+            _file = file;
             _runningPrograms = runningPrograms;
+            _consoleHelper = consoleHelper;
         }
 
-        public async Task CaptureProcessNameAsync(string filePath)
+        public async Task CaptureRunningPrgramActivityAsync()
         {
-            if (string.IsNullOrEmpty(filePath) || !filePath.Contains("txt"))
-                throw new Exception("Provide a valid txt file");
+            Console.WriteLine("1. Programs");
+            Console.WriteLine("2. Processes");
+            var option = Console.ReadLine();
+            var result = string.Empty;
 
-            var processes = _runningPrograms.GetRunningProcessList().Select((x, index) =>
+            if (option == "1")
             {
-                return $"{index + 1}. {x}";
-            }).ToList();
-
-            await _fileAdapter.AppendAllLineAsync(processes, filePath);
-        }
-
-        public async Task CaptureProgramTitleAsync(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath) || !filePath.Contains("txt"))
-                throw new Exception("Provide a valid txt file");
-
-            var programTitles = _runningPrograms.GetRunningProgramsList().Select((x, index) =>
+                var results = _runningPrograms.GetRunningProgramsList().OrderBy(x => x).ToList();
+                result = results.PrintResult();
+            }
+            else if (option == "2")
             {
-                return $"{index + 1}. {x}";
-            }).ToList();
+                var results = _runningPrograms.GetRunningProcessList().OrderBy(x => x).ToList();
+                result = results.PrintResult();
+            }
+            else
+                Console.WriteLine("Provide a valid option number");
 
-            await _fileAdapter.AppendAllLineAsync(programTitles, filePath);
+            await _consoleHelper.SaveResultToFileAsync(async (result, filePath) =>
+            {
+                await _file.AppendAllTextAsync(result, filePath);
+            }, result);
         }
     }
 }
