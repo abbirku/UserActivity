@@ -10,7 +10,7 @@ namespace Infrastructure.ActiveProgram
 {
     public interface IActiveProgramService
     {
-        Task CaptureActiveProgramTitleAsync();
+        Task CaptureActiveProgramActivityAsync();
     }
 
     public class ActiveProgramService : IActiveProgramService
@@ -27,7 +27,7 @@ namespace Infrastructure.ActiveProgram
             _consoleHelper = consoleHelper;
         }
 
-        public async Task CaptureActiveProgramTitleAsync()
+        public async Task CaptureActiveProgramActivityAsync()
         {
             var title = _activeProgram.CaptureActiveProgramTitle();
             var parts = title.Split("\\");

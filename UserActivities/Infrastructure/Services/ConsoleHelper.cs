@@ -1,6 +1,7 @@
 ﻿using CoreActivities.DirectoryManager;
 using CoreActivities.FileManager;
 using System;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Services
@@ -50,8 +51,10 @@ namespace Infrastructure.Services
                     }
                 }
             }
-            else
+            else if(option == "n")
                 return;
+            else
+                Console.WriteLine("Provide a valid option");
         }
     }
 }

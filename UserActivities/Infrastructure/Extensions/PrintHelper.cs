@@ -6,7 +6,7 @@ namespace CoreActivities.Extensions
 {
     public static class PrintHelper
     {
-        public static void PrintResult(this IList<string> results)
+        public static string PrintResult(this IList<string> results)
         {
             var tupleList = new List<(string, string, string)>();
             var main = results.Count - (results.Count % 3);
@@ -25,11 +25,14 @@ namespace CoreActivities.Extensions
             else if (left != 0 && left == 3)
                 tupleList.Add((results[main], results[main + 1], results[main + 2]));
 
-            Console.WriteLine(tupleList.AsEnumerable().ToStringTable(
+            var result = tupleList.AsEnumerable().ToStringTable(
                     new[] { "", "", "" },
-                    a => a.Item1, a => a.Item2, a => a.Item3));
+                    a => a.Item1, a => a.Item2, a => a.Item3);
 
+            Console.WriteLine(result);
             Console.WriteLine();
+
+            return result;
         }
 
         public static void PrintResult(this string result)

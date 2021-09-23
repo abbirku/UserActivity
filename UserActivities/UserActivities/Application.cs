@@ -24,7 +24,7 @@ namespace UserActivities
         private readonly IScreenCaptureService _screenCaptureService;
         private readonly IRunningPrograms _runningProgram;
         private readonly IActiveProgramService _activeProgramService;
-        private readonly IBrowserActivity _browserActivity;
+        private readonly IBrowserActivityService _browserActivityService;
         private string _folderName;
 
         public Application(IEgmaCv egmaCv,
@@ -33,7 +33,7 @@ namespace UserActivities
             IDirectoryManager directoryManagerService,
             IGoogleDriveApiManager googleDriveApiManagerAdapter,
             IActiveProgramService activeProgramService,
-            IBrowserActivity browserActivity)
+            IBrowserActivityService browserActivityService)
         {
             _egmaCv = egmaCv;
             _screenCaptureService = screenCaptureService;
@@ -42,7 +42,7 @@ namespace UserActivities
             _folderName = AppSettingsInfo.GetCurrentValue<string>("FolderName");
             _googleDriveApiManagerAdapter = googleDriveApiManagerAdapter;
             _activeProgramService = activeProgramService;
-            _browserActivity = browserActivity;
+            _browserActivityService = browserActivityService;
         }
 
         public async Task Run()
@@ -59,28 +59,9 @@ namespace UserActivities
 
                     var option = Console.ReadLine();
                     if (option == "1")
-                        await _activeProgramService.CaptureActiveProgramTitleAsync();
+                        await _activeProgramService.CaptureActiveProgramActivityAsync();
                     else if (option == "2")
-                    {
-                        Console.WriteLine("1. EnList Active Tab Url");
-                        Console.WriteLine("2. EnList Open Tabs");
-                        option = Console.ReadLine();
-
-                        if (option == "1")
-                        {
-                            var activeTabUrl = _browserActivity.EnlistActiveTabUrl(BrowserType.Chrome);
-                            activeTabUrl.PrintResult();
-                        }
-                        else if (option == "2")
-                        {
-                            var allTabs = _browserActivity.EnlistAllOpenTabs(BrowserType.Chrome).OrderBy(x => x).ToList();
-                            allTabs.PrintResult();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Provide a valid option number");
-                        }
-                    }
+                        await _browserActivityService.CaptureBrowserActivityAsync();
                     else if (option == "3")
                     {
                         Console.WriteLine("1. Programs");
