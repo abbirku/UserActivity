@@ -2,6 +2,7 @@
 using CoreActivities.FileManager;
 using System;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Services
@@ -10,7 +11,7 @@ namespace Infrastructure.Services
     {
         Task SaveResultToFileAsync<T>(Func<T, string, Task> method, T result);
         Task SaveResultToFileAsync(Func<string, Task> method);
-        void SaveResultToFileAsync<T>(Action<T, string> method, T result);
+        void SaveResultToFile<T>(Action<T, string> method, T result);
     }
 
     public class ConsoleHelper : IConsoleHelper
@@ -24,7 +25,7 @@ namespace Infrastructure.Services
             _directoryManager = directoryManager;
         }
 
-        public async Task SaveResultToFileAsync<T>(Func<T, string, Task> method, T result)
+        private async Task SavePatternAsync(Func<string, Task> commonMethod)
         {
             Console.WriteLine("Want to save the result? (y/n)");
             var option = Console.ReadLine();
@@ -48,85 +49,43 @@ namespace Infrastructure.Services
                     }
                     else
                     {
-                        await method(result, filePath);
+                        _file.CreateFile(filePath);
+                        await commonMethod(filePath);
                         break;
                     }
                 }
             }
-            else if(option == "n")
+            else if (option == "n")
                 return;
             else
                 Console.WriteLine("Provide a valid option");
+        }
+
+        public async Task SaveResultToFileAsync<T>(Func<T, string, Task> method, T result)
+        {
+            await SavePatternAsync(async (filePath) =>
+            {
+                await method(result, filePath);
+            });
         }
 
         public async Task SaveResultToFileAsync(Func<string, Task> method)
         {
-            Console.WriteLine("Want to save the result? (y/n)");
-            var option = Console.ReadLine();
-            if (option == "y")
+            await SavePatternAsync(async (filePath) =>
             {
-                while (true)
-                {
-                    Console.WriteLine("Provide a file name");
-                    var fileName = Console.ReadLine();
-
-                    var filePath = _directoryManager.CreateProgramDataFilePath(Constants.WorkingFolder, fileName);
-                    if (_file.DoesExists(filePath))
-                    {
-                        Console.WriteLine($"{fileName} already exits");
-                        Console.WriteLine("Want to continue? (y/n)");
-                        option = Console.ReadLine();
-                        if (option == "y")
-                            continue;
-                        else
-                            break;
-                    }
-                    else
-                    {
-                        await method(filePath);
-                        break;
-                    }
-                }
-            }
-            else if (option == "n")
-                return;
-            else
-                Console.WriteLine("Provide a valid option");
+                await method(filePath);
+            });
         }
 
-        public void SaveResultToFileAsync<T>(Action<T, string> method, T result)
+        public void SaveResultToFile<T>(Action<T, string> method, T result)
         {
-            Console.WriteLine("Want to save the result? (y/n)");
-            var option = Console.ReadLine();
-            if (option == "y")
+            SavePatternAsync(async (filePath) =>
             {
-                while (true)
+                await Task.Run(() =>
                 {
-                    Console.WriteLine("Provide a file name");
-                    var fileName = Console.ReadLine();
-
-                    var filePath = _directoryManager.CreateProgramDataFilePath(Constants.WorkingFolder, fileName);
-                    if (_file.DoesExists(filePath))
-                    {
-                        Console.WriteLine($"{fileName} already exits");
-                        Console.WriteLine("Want to continue? (y/n)");
-                        option = Console.ReadLine();
-                        if (option == "y")
-                            continue;
-                        else
-                            break;
-                    }
-                    else
-                    {
-                        method(result, filePath);
-                        break;
-                    }
-                }
-            }
-            else if (option == "n")
-                return;
-            else
-                Console.WriteLine("Provide a valid option");
+                    method(result, filePath);
+                });
+            }).Wait();
         }
     }
 }

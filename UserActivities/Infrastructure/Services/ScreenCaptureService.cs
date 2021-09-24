@@ -2,6 +2,7 @@
 using CoreActivities.FileManager;
 using System;
 using System.Threading.Tasks;
+using CoreActivities.DirectoryManager;
 
 namespace Infrastructure.Services
 {
@@ -13,14 +14,17 @@ namespace Infrastructure.Services
     public class ScreenCaptureService : IScreenCaptureService
     {
         private readonly IFileManager _fileManager;
+        private readonly IDirectoryManager _directoryManager;
         private readonly IScreenCapture _screenCapture;
         private readonly IConsoleHelper _consoleHelper;
 
         public ScreenCaptureService(IFileManager fileManager,
+            IDirectoryManager directoryManager,
             IScreenCapture screenCapture,
             IConsoleHelper consoleHelper)
         {
             _fileManager = fileManager;
+            _directoryManager = directoryManager;
             _screenCapture = screenCapture;
             _consoleHelper = consoleHelper;
         }
@@ -48,7 +52,7 @@ namespace Infrastructure.Services
 
             var image = _screenCapture.CaptureUserScreen(1920, 1080);
 
-            _consoleHelper.SaveResultToFileAsync((result, filePath) =>
+            _consoleHelper.SaveResultToFile((result, filePath) =>
             {
                 _fileManager.SaveBitmapImage(filePath, result);
             }, image);
