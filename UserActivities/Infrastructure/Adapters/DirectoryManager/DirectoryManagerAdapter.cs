@@ -11,6 +11,7 @@ namespace CoreActivities.DirectoryManager
         bool ChecknCreateDirectory(string directoryPath);
         string CreateProgramDataFilePath(string folderName, string fileName);
         IList<string> ListFilesInDirectory(string directoryPath, string pattern = null);
+        string RetrivePcDownloadFolder();
     }
 
     public class DirectoryManagerAdapter : IDirectoryManager
@@ -72,5 +73,8 @@ namespace CoreActivities.DirectoryManager
 
             return _directoryManagerAdaptee.FilesInDirectory(directoryPath, pattern);
         }
+
+        public string RetrivePcDownloadFolder()
+            => _directoryManagerAdaptee.RetrivePcDownloadFolder();
     }
 }
