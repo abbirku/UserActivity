@@ -59,6 +59,7 @@ namespace UserActivities
                     Console.WriteLine("4. Screen Capture");
                     Console.WriteLine("5. WebCam");
                     Console.WriteLine("6. Enlist directory files");
+                    Console.WriteLine("7. Delete a file");
 
                     var option = Console.ReadLine();
                     if (option == "1")
@@ -73,6 +74,8 @@ namespace UserActivities
                         await _webCamService.CaptureWebCamActivityAsync();
                     else if (option == "6")
                         _directoryService.CaptureDirectoryActivity();
+                    else if (option == "7")
+                        _directoryService.DeleteFileActivity();
                     else
                         Console.WriteLine("Provide a valid option number");
 

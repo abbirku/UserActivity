@@ -11,6 +11,7 @@ namespace CoreActivities.FileManager
         string FileName(string filePath);
         bool DoesExists(string filePath);
         void CreateFile(string filePath);
+        void DeleteFile(string filePath);
         string GetMimeType(string filePath);
         Task<byte[]> ReadFileAsByteAsync(string filePath);
         string ConvertByteToBase64String(byte[] file);
@@ -32,6 +33,9 @@ namespace CoreActivities.FileManager
             var stream = File.Create(filePath);
             stream.Close();
         }
+
+        public void DeleteFile(string filePath)
+            => File.Delete(filePath);
 
         public bool DoesExists(string filePath)
         {
