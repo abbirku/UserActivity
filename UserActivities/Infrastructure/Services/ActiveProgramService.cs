@@ -30,13 +30,12 @@ namespace Infrastructure.ActiveProgram
         public async Task CaptureActiveProgramActivityAsync()
         {
             var title = _activeProgram.CaptureActiveProgramTitle();
-            var parts = title.Split("\\");
-            parts[^1].PrintResult();
+            title.PrintResult();
 
             await _consoleHelper.SaveResultToFileAsync(async (title, filePath) =>
             {
                 await _file.AppendAllTextAsync(title, filePath);
-            }, parts[^1]);
+            }, title);
         }
     }
 }
