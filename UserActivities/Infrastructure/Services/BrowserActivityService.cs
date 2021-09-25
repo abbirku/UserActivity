@@ -1,5 +1,7 @@
 ﻿using CoreActivities.BrowserActivity;
+using CoreActivities.Extensions;
 using CoreActivities.FileManager;
+using Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,54 +12,48 @@ namespace Infrastructure.BrowserActivity
 {
     public interface IBrowserActivityService
     {
-        Task EnlistAllOpenTabs(BrowserType browserType, string filePath);
-        Task EnlistActiveTabUrl(BrowserType browserType, string filePath);
+        Task CaptureBrowserActivityAsync();
     }
 
     public class BrowserActivityService : IBrowserActivityService
     {
-        private readonly IFile _fileAdapter;
+        private readonly IFile _file;
         private readonly IBrowserActivity _browserActivity;
-        private readonly BrowserActivityEnumAdaptee _browserActivityEnumAdaptee;
+        private readonly IConsoleHelper _consoleHelper;
 
-        public BrowserActivityService(IFile fileAdapter,
+        public BrowserActivityService(IFile file,
             IBrowserActivity browserActivity,
-            BrowserActivityEnumAdaptee browserActivityEnumAdaptee)
+            IConsoleHelper consoleHelper)
         {
-            _fileAdapter = fileAdapter;
+            _file = file;
             _browserActivity = browserActivity;
-            _browserActivityEnumAdaptee = browserActivityEnumAdaptee;
+            _consoleHelper = consoleHelper;
         }
 
-        public async Task EnlistActiveTabUrl(BrowserType browserType, string filePath)
+        public async Task CaptureBrowserActivityAsync()
         {
-            if (string.IsNullOrEmpty(filePath) || !filePath.Contains("txt"))
-                throw new Exception("Provide a valid txt file and browser name");
+            Console.WriteLine("1. EnList Active Tab Url");
+            Console.WriteLine("2. EnList Open Tabs");
+            var option = Console.ReadLine();
+            var result = string.Empty;
 
-            var url = _browserActivity.EnlistActiveTabUrl(browserType);
-            var parts = url.Split("/");
-            var validUrl = string.Empty;
-
-            if (parts.Length > 0)
-                validUrl = parts[0];
-
-            if (string.IsNullOrWhiteSpace(validUrl))
-                throw new Exception($"No valid url found on active tab for browser {_browserActivityEnumAdaptee.ToDescriptionString(browserType)}");
-
-            await _fileAdapter.AppendAllTextAsync(validUrl, filePath);
-        }
-
-        public async Task EnlistAllOpenTabs(BrowserType browserType, string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath) || !filePath.Contains("txt"))
-                throw new Exception("Provide a valid txt file and browser name");
-
-            var tabs = _browserActivity.EnlistAllOpenTabs(browserType).Select((x, index) =>
+            if (option == "1")
             {
-                return $"{index + 1}. {x}";
-            }).ToList();
+                result = _browserActivity.EnlistActiveTabUrl(BrowserType.Chrome);
+                result.PrintResult();
+            }
+            else if (option == "2")
+            {
+                var allTabs = _browserActivity.EnlistAllOpenTabs(BrowserType.Chrome).OrderBy(x => x).ToList();
+                result = allTabs.PrintResult();
+            }
+            else
+                Console.WriteLine("Provide a valid option");
 
-            await _fileAdapter.AppendAllLineAsync(tabs, filePath);
+            await _consoleHelper.SaveResultToFileAsync(async (result, filePath) =>
+            {
+                await _file.AppendAllTextAsync(result, filePath);
+            }, result);
         }
     }
 }

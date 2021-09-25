@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace UserActivities
+namespace CoreActivities.Extensions
 {
     public static class TableParser
     {
