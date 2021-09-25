@@ -63,6 +63,7 @@ namespace Infrastructure.Services
         public async Task DownloadFileAsync()
         {
             var files = await _googleDriveApiManager.GetAllFilesAndFolders();
+            Console.WriteLine($"To download a file from google drive provide a number between 1 and {files.Count}");
             await PrintFilesInAGoogleDirectory();
 
             while (true)
@@ -73,7 +74,7 @@ namespace Infrastructure.Services
 
                 if (0 < sl && sl <= files.Count)
                 {
-                    await _googleDriveApiManager.DownloadAsync(files[sl-1], $"{_directoryManager.RetrivePcDownloadFolder()}\\{files[sl - 1]}");
+                    await _googleDriveApiManager.DownloadAsync(files[sl-1], $"{_directoryManager.RetrivePcDownloadFolder()}\\{files[sl - 1].Name}");
                     break;
                 }
                 else

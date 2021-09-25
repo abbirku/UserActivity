@@ -42,6 +42,7 @@ namespace UserActivities
             builder.RegisterType<ConsoleHelper>().As<IConsoleHelper>();
             builder.RegisterType<WebCamService>().As<IWebCamService>();
             builder.RegisterType<DirectoryService>().As<IDirectoryService>();
+            builder.RegisterType<GoogleDriveService>().As<IGoogleDriveService>();
 
             return builder.Build();
         }

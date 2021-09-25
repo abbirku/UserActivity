@@ -19,7 +19,7 @@ namespace UserActivities
     public class Application
     {
         private readonly IWebCamService _webCamService;
-        private readonly IGoogleDriveApiManager _googleDriveApiManagerAdapter;
+        private readonly IGoogleDriveService _googleDriveService;
         private readonly IScreenCaptureService _screenCaptureService;
         private readonly IRunningProgramService _runningProgramService;
         private readonly IActiveProgramService _activeProgramService;
@@ -30,7 +30,7 @@ namespace UserActivities
         public Application(IWebCamService webCamService,
             IScreenCaptureService screenCaptureService,
             IRunningProgramService runningProgramService,
-            IGoogleDriveApiManager googleDriveApiManagerAdapter,
+            IGoogleDriveService googleDriveService,
             IActiveProgramService activeProgramService,
             IBrowserActivityService browserActivityService,
             IDirectoryService directoryService)
@@ -39,7 +39,7 @@ namespace UserActivities
             _screenCaptureService = screenCaptureService;
             _runningProgramService = runningProgramService;
             _folderName = AppSettingsInfo.GetCurrentValue<string>("FolderName");
-            _googleDriveApiManagerAdapter = googleDriveApiManagerAdapter;
+            _googleDriveService = googleDriveService;
             _activeProgramService = activeProgramService;
             _browserActivityService = browserActivityService;
             _directoryService = directoryService;
@@ -60,6 +60,9 @@ namespace UserActivities
                     Console.WriteLine("5. WebCam");
                     Console.WriteLine("6. Enlist directory files");
                     Console.WriteLine("7. Delete a file");
+                    Console.WriteLine("8. Upload a file on google drive");
+                    Console.WriteLine("9. Download a file on google drive");
+                    Console.WriteLine("10. Delete a file from google drive");
 
                     var option = Console.ReadLine();
                     if (option == "1")
@@ -76,6 +79,12 @@ namespace UserActivities
                         _directoryService.CaptureDirectoryActivity();
                     else if (option == "7")
                         _directoryService.DeleteFileActivity();
+                    else if (option == "8")
+                        await _googleDriveService.UploadFileToGoogleAsync();
+                    else if (option == "9")
+                        await _googleDriveService.DownloadFileAsync();
+                    else if (option == "10")
+                        await _googleDriveService.DeleteFileAsync();
                     else
                         Console.WriteLine("Provide a valid option number");
 
